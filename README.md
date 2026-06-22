@@ -28,7 +28,9 @@ How to adjust the amount of mock data? 🧪
 --> because I do my projects from A to Z - AI helped me with names of companies and names of users, the rest is my own work. I prefer to work harder and understand the logic, cause one created it will be possible to easy repaeted in other environment. 
 
 The script in the attachment. Below some pictures of code and generated excel file
-
+![kod] (mock1.png)
+![kod2](mock2.png)
+![raport csv](mock3.png)
 
 
 ____________________________________________________________POLISH VERSION __________________________________________________________________________________________________________
