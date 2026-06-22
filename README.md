@@ -1,6 +1,6 @@
 # SAP-Ariba-Mock-Data-Generator-for-Procurement-Analytics
 
-______________________________________ ENGLISH VERSION _____________________________________________________________________________________________________
+______________________ ENGLISH VERSION ______________________
 
 A Python-based tool designed to generate synthetic, production-grade Purchase Order (PO) datasets, including the SAP Ariba Reporting standards.📊🧪 
 
@@ -28,12 +28,12 @@ How to adjust the amount of mock data? 🧪
 --> because I do my projects from A to Z - AI helped me with names of companies and names of users, the rest is my own work. I prefer to work harder and understand the logic, cause one created it will be possible to easy repaeted in other environment. 
 
 The script in the attachment. Below some pictures of code and generated excel file
-![kod] (mock1.png)
+![kod](mock1.png)
 ![kod2](mock2.png)
 ![raport csv](mock3.png)
 
 
-____________________________________________________________POLISH VERSION __________________________________________________________________________________________________________
+______________________ POLISH VERSION ______________________
 
 Generator Danych Mockowych SAP Ariba dla Analityki Zakupowej (Procurement) 📊🧪 
 
@@ -61,3 +61,6 @@ Jak zmienić ilość danych testowych? 🧪
 --> ponieważ robię moje projekty od A do Z - AI pomogło mi w nazwach firm i użytkowników, reszta to moja własna praca. Wolę pracować ciężej i rozumieć logikę, bo to, co stworzyłem, będzie można łatwo powtórzyć w innym środowisku.
 
 Skrypt w załączniku. Poniżej kilka zdjęć kodu i wygenerowanego pliku excel
+![kod](mock1.png)
+![kod2](mock2.png)
+![raport csv](mock3.png)
