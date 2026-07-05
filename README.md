@@ -60,6 +60,14 @@ Jak zmienić ilość danych testowych? 🧪
 --> ponieważ łatwo zmienić dane, które potrzebujemy - ilość wierszy, ilość użytkowników, datę rozpoczęcia, datę dostawy itp.
 --> ponieważ robię moje projekty od A do Z - AI pomogło mi w nazwach firm i użytkowników, reszta to moja własna praca. Wolę pracować ciężej i rozumieć logikę, bo to, co stworzyłem, będzie można łatwo powtórzyć w innym środowisku.
 
+<hr style="border:3px solid #AEC6CF;">
+### 📧 Kontakt --> Kamila Dudzińska
+
+
+📧 kamila.dudzinska@onet.pl  
+
+🌐 [LinkedIn](https://www.linkedin.com/flagship-web/in/kamila-dudzi%C5%84ska-856bb31b8/)
+
 Skrypt w załączniku. Poniżej kilka zdjęć kodu i wygenerowanego pliku excel
 ![kod](mock1.png)
 ![kod2](mock2.png)
