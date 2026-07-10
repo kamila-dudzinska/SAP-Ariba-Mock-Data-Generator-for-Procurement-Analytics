@@ -1,7 +1,5 @@
 # SAP-Ariba-Mock-Data-Generator-for-Procurement-Analytics
 
-______________________ ENGLISH VERSION ______________________
-
 A Python-based tool designed to generate synthetic, production-grade Purchase Order (PO) datasets, including the SAP Ariba Reporting standards.📊🧪 
 
 🚀A Python-based tool designed to generate synthetic, production-grade Purchase Order (PO) datasets, including the SAP Ariba Reporting standards. It accurately mirrors the technical architecture, data engineering principles, and business logic of the SAP Ariba ecosystem.
@@ -32,8 +30,15 @@ The script in the attachment. Below some pictures of code and generated excel fi
 ![kod2](mock2.png)
 ![raport csv](mock3.png)
 
+### Kontakt:  
 
-______________________ POLISH VERSION ______________________
+[![Kamila Dudzińska](https://img.shields.io/badge/Kamila%20Dudzińska-ff69b4?style=for-the-badge)](mailto:kamila.dudzinska@onet.pl)
+[![Email](https://img.shields.io/badge/Email-555555?style=for-the-badge)](mailto:kamila.dudzinska@onet.pl)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge)](https://www.linkedin.com/flagship-web/in/kamila-dudzi%C5%84ska-856bb31b8/)
+
+
+
+___________________________ POLISH VERSION ___________________________
 
 Generator Danych Mockowych SAP Ariba dla Analityki Zakupowej (Procurement) 📊🧪 
 
@@ -61,14 +66,9 @@ Jak zmienić ilość danych testowych? 🧪
 --> ponieważ robię moje projekty od A do Z - AI pomogło mi w nazwach firm i użytkowników, reszta to moja własna praca. Wolę pracować ciężej i rozumieć logikę, bo to, co stworzyłem, będzie można łatwo powtórzyć w innym środowisku.
 
 <hr style="border:3px solid #AEC6CF;">
-### 📧 Kontakt --> Kamila Dudzińska
 
+### Kontakt:  
 
-📧 kamila.dudzinska@onet.pl  
-
-🌐 [LinkedIn](https://www.linkedin.com/flagship-web/in/kamila-dudzi%C5%84ska-856bb31b8/)
-
-Skrypt w załączniku. Poniżej kilka zdjęć kodu i wygenerowanego pliku excel
-![kod](mock1.png)
-![kod2](mock2.png)
-![raport csv](mock3.png)
+[![Kamila Dudzińska](https://img.shields.io/badge/Kamila%20Dudzińska-ff69b4?style=for-the-badge)](mailto:kamila.dudzinska@onet.pl)
+[![Email](https://img.shields.io/badge/Email-555555?style=for-the-badge)](mailto:kamila.dudzinska@onet.pl)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge)](https://www.linkedin.com/flagship-web/in/kamila-dudzi%C5%84ska-856bb31b8/)
