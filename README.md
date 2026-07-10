@@ -21,9 +21,13 @@ How to adjust the amount of mock data? 🧪
 1. In the row 219 change the number in brackets --> for _ in range(2500)
 
 💱 Why I decided for Python instead of AI? 
+
 --> because the script is faster, we can genearte a mock dataset with 50 000 rows in some second and for the AI it would take ages, if not collapsed. 
+
 --> because it is easy to change the data we need - the amount of rows, the amount of users, start date, delivery date etc.
+
 --> because I do my projects from A to Z - AI helped me with names of companies and names of users, the rest is my own work. I prefer to work harder and understand the logic, cause one created it will be possible to easy repaeted in other environment. 
+
 
 The script in the attachment. Below some pictures of code and generated excel file
 ![kod](mock1.png)
@@ -61,9 +65,13 @@ Jak zmienić ilość danych testowych? 🧪
 1. W wierszu 219 zmień liczbę w nawiasach --> for _ in range(2500)
 
 💱 Dlaczego zdecydowałem się na Python zamiast AI?
+
 --> ponieważ skrypt działa szybciej, możemy wygenerować fikcyjny zbiór danych o 50 000 wierszach w kilka sekund, a AI zajęłoby to wieki, jeśli w ogóle by się nie zawiesiło.
+
 --> ponieważ łatwo zmienić dane, które potrzebujemy - ilość wierszy, ilość użytkowników, datę rozpoczęcia, datę dostawy itp.
+
 --> ponieważ robię moje projekty od A do Z - AI pomogło mi w nazwach firm i użytkowników, reszta to moja własna praca. Wolę pracować ciężej i rozumieć logikę, bo to, co stworzyłem, będzie można łatwo powtórzyć w innym środowisku.
+
 
 <hr style="border:3px solid #AEC6CF;">
 
