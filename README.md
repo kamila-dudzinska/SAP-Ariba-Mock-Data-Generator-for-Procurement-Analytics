@@ -34,7 +34,7 @@ The script in the attachment. Below some pictures of code and generated excel fi
 ![kod2](mock2.png)
 ![raport csv](mock3.png)
 
-### Kontakt:  
+### Contact:  
 
 [![Kamila Dudzińska](https://img.shields.io/badge/Kamila%20Dudzińska-ff69b4?style=for-the-badge)](mailto:kamila.dudzinska@onet.pl)
 [![Email](https://img.shields.io/badge/Email-555555?style=for-the-badge)](mailto:kamila.dudzinska@onet.pl)
