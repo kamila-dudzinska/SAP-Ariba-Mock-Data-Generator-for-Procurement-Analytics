@@ -74,9 +74,9 @@ Jak zmienić ilość danych testowych? 🧪
 
 Fragenty kodu:
 
-![kod](mock1.png)
-![kod2](mock2.png)
-![raport csv](mock3.png)
+![kod](images/mock1.png)
+![kod2](images/mock2.png)
+![raport csv](images/mock3.png)
 
 <hr style="border:3px solid #AEC6CF;">
 
