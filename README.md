@@ -30,9 +30,9 @@ How to adjust the amount of mock data? 🧪
 
 
 The script in the attachment. Below some pictures of code and generated excel file
-![kod](mock1.png)
-![kod2](mock2.png)
-![raport csv](mock3.png)
+![kod](images/mock1.png)
+![kod2](images/mock2.png)
+![raport csv](images/mock3.png)
 
 ### Contact:  
 
@@ -72,6 +72,10 @@ Jak zmienić ilość danych testowych? 🧪
 
 --> ponieważ robię moje projekty od A do Z - AI pomogło mi w nazwach firm i użytkowników, reszta to moja własna praca. Wolę pracować ciężej i rozumieć logikę, bo to, co stworzyłem, będzie można łatwo powtórzyć w innym środowisku.
 
+Fragenty kodu:
+![kod](mock1.png)
+![kod2](mock2.png)
+![raport csv](mock3.png)
 
 <hr style="border:3px solid #AEC6CF;">
 
