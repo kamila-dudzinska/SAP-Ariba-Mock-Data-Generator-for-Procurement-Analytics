@@ -69,11 +69,6 @@ python -m pytest -v
 
 - Extensible architecture — easy to add new fields, business rules, validation layers, or additional procurement modules (invoices, contracts, sourcing events).
 
-Structure of the project:
-src/ariba_generator.py – główny generator danych SAP Ariba.
-
-src/functions.py – zestaw funkcji pomocniczych z pełną dokumentacją (docstringi), stanowiących API generatora.
-
 
 How to adjust the amount of mock data? 🧪 
 1. In the row 219 change the number in brackets --> for _ in range(2500)
@@ -99,6 +94,34 @@ Future Improvements: ✨
 
 Full documentation and regex: 
 [Documentation and regex](docs/data_description.ipynb)
+
+Example of functions:
+# generate PO number
+def generate_po_number(existing:int) -> int:
+    '''
+    Generates an order number in the range 6000000000 - 6000999999, 
+    according to the SAP ARIBA standard.
+
+    This function genertes a random PO number from the mentioned range.
+
+    Args:
+        existing (list[int]): 
+            A list of already generated PO numbers to avoid duplicates.
+
+    Returns:
+        int: A unique PO number within the specified range.
+
+    Example:
+        >>> existing = [6000000001, 6000000002]
+        >>> generate_po_number(existing)
+        6000000347
+    '''
+  
+    while True:
+        num = random.randint(6000000000, 6000999999)
+        if num not in existing:
+            return num
+
 
 
 The script in the attachment. Below some pictures of code and generated excel file
@@ -209,6 +232,34 @@ Przyszłe ulepszenia: ✨
 
 Pełna dokumentacja i regex: 
 [Documentation and regex](docs/data_description.ipynb)
+
+Przykłady funkcji:
+# generate PO number
+def generate_po_number(existing:int) -> int:
+    '''
+    Generates an order number in the range 6000000000 - 6000999999, 
+    according to the SAP ARIBA standard.
+
+    This function genertes a random PO number from the mentioned range.
+
+    Args:
+        existing (list[int]): 
+            A list of already generated PO numbers to avoid duplicates.
+
+    Returns:
+        int: A unique PO number within the specified range.
+
+    Example:
+        >>> existing = [6000000001, 6000000002]
+        >>> generate_po_number(existing)
+        6000000347
+    '''
+  
+    while True:
+        num = random.randint(6000000000, 6000999999)
+        if num not in existing:
+            return num
+
 
 
 Fragenty kodu:
