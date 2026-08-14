@@ -128,6 +128,25 @@ IDE: Python
 
 Moduły: Pandas, Random, Datetime, CSV
 
+Struktura projektu:
+Projekt został zorganizowany w sposób modularny, aby oddzielić dane, kod źródłowy, dokumentację i wyniki generowania.  
+Każdy folder pełni jasno określoną funkcję:
+
+| Folder / Plik | Opis |
+|----------------|------|
+| **data/** | Zawiera pliki wejściowe używane przez generator, np. wzorce regexów (`mock_regex.xlsx`, `regex1.xlsx`) wykorzystywane do tworzenia realistycznych danych SAP Ariba. |
+| **data_output/** | Folder z wynikami działania generatora — przykładowy plik `procurement_mock_2500.xlsx` zawiera wygenerowany zestaw danych. |
+| **docs/** | Dokumentacja techniczna i opis danych w formacie Jupyter Notebook (`data_description.ipynb`). |
+| **images/** | Zrzuty ekranu i wizualizacje projektu (`mock1.png`, `mock2.png`, `mock3.png`, `po_status.png`) używane w README do prezentacji efektów działania generatora. |
+| **src/** | Kod źródłowy projektu: <br>• `__init__.py` – inicjalizacja modułu <br>• `procurement_dataset1.py` – główny skrypt generujący dane SAP Ariba <br>• `procurement_mock_functions.py` – zestaw funkcji pomocniczych z profesjonalnymi docstringami, stanowiących API generatora. |
+| **tests/** | Folder przeznaczony na testy jednostkowe i walidację poprawności danych. |
+| **README.md** | Dokumentacja projektu z opisem celu, działania i przykładowych wyników. |
+| **Dockerfile** | Definicja środowiska uruchomieniowego dla konteneryzacji projektu. |
+| **requirements.txt** | Lista wymaganych bibliotek Python. |
+| **pytest.ini** | Konfiguracja testów automatycznych. |
+| **LICENSE** | Informacja o licencji projektu (MIT). |
+| **.gitignore** | Plik wykluczający niepotrzebne elementy z repozytorium Git. |
+
 📁 Jak uruchomić? 
 1. Sklonuj repozytorium.
 2. Zainstaluj moduły pip install -r requirements.txt
