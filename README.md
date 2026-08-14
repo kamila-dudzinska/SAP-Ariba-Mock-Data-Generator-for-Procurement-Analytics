@@ -66,6 +66,7 @@ SAP-Ariba-Mock-Data-Generator-for-Procurement-Analytics/
 └── .gitignore
 
 
+
 📁 How to run?
 1. Copy the repository.
 2. Install the modules pip install -r requirements.txt
