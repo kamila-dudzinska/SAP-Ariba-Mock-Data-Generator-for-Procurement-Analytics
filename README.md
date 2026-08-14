@@ -29,7 +29,7 @@ How to adjust the amount of mock data? 🧪
 --> because I do my projects from A to Z - AI helped me with names of companies and names of users, the rest is my own work. I prefer to work harder and understand the logic, cause one created it will be possible to easy repaeted in other environment. 
 
 
-Future Improvements ✨
+Future Improvements: ✨
 
 - Expand the dataset with additional fields sourced from CORA to simulate multi‑system reporting (SAP Ariba + CORA) 
 
@@ -84,7 +84,7 @@ Jak zmienić ilość danych testowych? 🧪
 --> ponieważ robię moje projekty od A do Z - AI pomogło mi w nazwach firm i użytkowników, reszta to moja własna praca. Wolę pracować ciężej i rozumieć logikę, bo to, co stworzyłem, będzie można łatwo powtórzyć w innym środowisku.
 
 
-Przyszłe ulepszenia ✨
+Przyszłe ulepszenia: ✨
 
 - Rozszerzenie zestawu danych o dodatkowe pola pochodzące z systemu CORA, aby zasymulować raportowanie wieloźródłowe (SAP Ariba + CORA) 
 
