@@ -25,7 +25,7 @@ Project test run on module **pytest**.
 To run tests:
 ```bash
 python -m pytest -v
-
+```
 
 How to adjust the amount of mock data? 🧪 
 1. In the row 219 change the number in brackets --> for _ in range(2500)
@@ -89,7 +89,7 @@ Projekt korzysta z frameworka **pytest**.
 Aby uruchomić testy:
 ```bash
 python -m pytest -v
-
+```
 
 Jak zmienić ilość danych testowych? 🧪 
 1. W wierszu 219 zmień liczbę w nawiasach --> for _ in range(2500)
