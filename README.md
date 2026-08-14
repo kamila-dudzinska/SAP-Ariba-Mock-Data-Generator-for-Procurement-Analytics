@@ -29,6 +29,17 @@ How to adjust the amount of mock data? 🧪
 --> because I do my projects from A to Z - AI helped me with names of companies and names of users, the rest is my own work. I prefer to work harder and understand the logic, cause one created it will be possible to easy repaeted in other environment. 
 
 
+Future Improvements ✨
+
+- Expand the dataset with additional fields sourced from CORA to simulate multi‑system reporting (SAP Ariba + CORA) 
+
+- Implement cross‑system merge logic to reflect real procurement workflows and enable deeper invoice‑related analysis 
+
+- Extend the Jupyter Notebook with detailed description of SAP-Ariba-Mock-Data-Generator-for-Procurement-Analytics including the regex, business logic and rules
+
+- Introduce modular data generators to support future integration with other ERP or financial systems 🧩
+
+
 The script in the attachment. Below some pictures of code and generated excel file
 ![kod](images/mock1.png)
 ![kod2](images/mock2.png)
@@ -71,6 +82,18 @@ Jak zmienić ilość danych testowych? 🧪
 --> ponieważ łatwo zmienić dane, które potrzebujemy - ilość wierszy, ilość użytkowników, datę rozpoczęcia, datę dostawy itp.
 
 --> ponieważ robię moje projekty od A do Z - AI pomogło mi w nazwach firm i użytkowników, reszta to moja własna praca. Wolę pracować ciężej i rozumieć logikę, bo to, co stworzyłem, będzie można łatwo powtórzyć w innym środowisku.
+
+
+Przyszłe ulepszenia ✨
+
+- Rozszerzenie zestawu danych o dodatkowe pola pochodzące z systemu CORA, aby zasymulować raportowanie wieloźródłowe (SAP Ariba + CORA) 
+
+- Wprowadzenie logiki łączenia danych między systemami, odzwierciedlającej rzeczywiste procesy zakupowe oraz umożliwiającej głębszą analizę danych związanych z fakturami 
+
+- Rozbudowa Jupyter Notebook o szczegółowy opis działania SAP‑Ariba‑Mock‑Data‑Generator‑for‑Procurement‑Analytics, obejmujący regexy, logikę biznesową oraz zasady generowania danych 
+
+- Wprowadzenie modułowych generatorów danych wspierających przyszłą integrację z innymi systemami ERP lub finansowymi 🧩
+
 
 Fragenty kodu:
 
