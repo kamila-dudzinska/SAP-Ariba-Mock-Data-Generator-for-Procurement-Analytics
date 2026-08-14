@@ -17,6 +17,16 @@ Modules: Pandas, Random, Datetime, CSV
 2. Install the modules pip install -r requirements.txt
 3. Run the script
 
+   
+🧪 How to run tests?
+
+Project test run on module **pytest**.
+
+To run tests:
+```bash
+python -m pytest -v
+
+
 How to adjust the amount of mock data? 🧪 
 1. In the row 219 change the number in brackets --> for _ in range(2500)
 
@@ -71,6 +81,15 @@ Moduły: Pandas, Random, Datetime, CSV
 1. Sklonuj repozytorium.
 2. Zainstaluj moduły pip install -r requirements.txt
 3. Uruchom skrypt
+
+🧪 Jak uruchomić testy
+
+Projekt korzysta z frameworka **pytest**.
+
+Aby uruchomić testy:
+```bash
+python -m pytest -v
+
 
 Jak zmienić ilość danych testowych? 🧪 
 1. W wierszu 219 zmień liczbę w nawiasach --> for _ in range(2500)
