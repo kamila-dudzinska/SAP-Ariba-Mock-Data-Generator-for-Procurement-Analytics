@@ -261,7 +261,6 @@ def generate_po_number(existing:int) -> int:
             return num
 
 
-
 Fragenty kodu:
 
 ![kod](images/mock1.png)
