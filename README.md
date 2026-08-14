@@ -12,6 +12,26 @@ IDE: Python
 
 Modules: Pandas, Random, Datetime, CSV
 
+Project's Structure:
+
+The project is organized in a modular way to separate input data, source code, documentation, and generated outputs.  
+Each folder serves a clear purpose:
+
+| Folder / File | Description |
+|----------------|-------------|
+| **data/** | Contains input files used by the generator, e.g. regex patterns (`mock_regex.xlsx`, `regex1.xlsx`) for creating realistic SAP Ariba mock data. |
+| **data_output/** | Stores generated datasets — e.g. `procurement_mock_2500.xlsx` is a sample output file. |
+| **docs/** | Technical documentation and data description in Jupyter Notebook format (`data_description.ipynb`). |
+| **images/** | Screenshots and visual examples (`mock1.png`, `mock2.png`, `mock3.png`, `po_status.png`) used in README to illustrate generator results. |
+| **src/** | Source code of the project: <br>• `__init__.py` – module initializer <br>• `procurement_dataset1.py` – main SAP Ariba data generator script <br>• `procurement_mock_functions.py` – helper functions with professional docstrings forming the generator’s API. |
+| **tests/** | Folder for unit tests and data validation scripts. |
+| **README.md** | Project documentation describing purpose, workflow, and sample outputs. |
+| **Dockerfile** | Runtime environment definition for containerization. |
+| **requirements.txt** | List of required Python libraries. |
+| **pytest.ini** | Configuration for automated testing. |
+| **LICENSE** | Project license information (MIT). |
+| **.gitignore** | Excludes unnecessary files from Git tracking. |
+
 📁 How to run?
 1. Copy the repository.
 2. Install the modules pip install -r requirements.txt
@@ -48,6 +68,11 @@ python -m pytest -v
 - Deterministic and reproducible — seed‑based generation ensures identical results for testing and documentation.
 
 - Extensible architecture — easy to add new fields, business rules, validation layers, or additional procurement modules (invoices, contracts, sourcing events).
+
+Structure of the project:
+src/ariba_generator.py – główny generator danych SAP Ariba.
+
+src/functions.py – zestaw funkcji pomocniczych z pełną dokumentacją (docstringi), stanowiących API generatora.
 
 
 How to adjust the amount of mock data? 🧪 
