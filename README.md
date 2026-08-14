@@ -96,7 +96,6 @@ Full documentation and regex:
 [Documentation and regex](docs/data_description.ipynb)
 
 Example of functions:
-# generate PO number
 def generate_po_number(existing:int) -> int:
     '''
     Generates an order number in the range 6000000000 - 6000999999, 
@@ -234,7 +233,6 @@ Pełna dokumentacja i regex:
 [Documentation and regex](docs/data_description.ipynb)
 
 Przykłady funkcji:
-# generate PO number
 def generate_po_number(existing:int) -> int:
     '''
     Generates an order number in the range 6000000000 - 6000999999, 
