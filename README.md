@@ -32,6 +32,7 @@ Each folder serves a clear purpose:
 | **LICENSE** | Project license information (MIT). |
 | **.gitignore** | Excludes unnecessary files from Git tracking. |
 
+
 SAP-Ariba-Mock-Data-Generator-for-Procurement-Analytics/
 
 ├── data/
