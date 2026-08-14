@@ -72,6 +72,9 @@ Future Improvements: ✨
 
 - Introduce modular data generators to support future integration with other ERP or financial systems 🧩
 
+Full documentation and regex: 
+[Documentation and regex](docs/data_description.ipynb)
+
 
 The script in the attachment. Below some pictures of code and generated excel file
 ![kod](images/mock1.png)
@@ -158,6 +161,10 @@ Przyszłe ulepszenia: ✨
 - Rozbudowa Jupyter Notebook o szczegółowy opis działania SAP‑Ariba‑Mock‑Data‑Generator‑for‑Procurement‑Analytics, obejmujący regexy, logikę biznesową oraz zasady generowania danych 
 
 - Wprowadzenie modułowych generatorów danych wspierających przyszłą integrację z innymi systemami ERP lub finansowymi 🧩
+
+
+Pełna dokumentacja i regex: 
+[Documentation and regex](docs/data_description.ipynb)
 
 
 Fragenty kodu:
