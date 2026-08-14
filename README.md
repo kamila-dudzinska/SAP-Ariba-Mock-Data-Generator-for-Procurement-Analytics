@@ -10,7 +10,7 @@ A Python-based tool designed to generate synthetic, production-grade Purchase Or
 
 IDE: Python
 
-Modules: Pandas, Random, Datetime, CSV
+🧩 Modules: Pandas, Random, Datetime, CSV
 
 Project's Structure:
 
@@ -182,7 +182,7 @@ Generator Danych Mockowych SAP Ariba dla Analityki Zakupowej (Procurement) 📊�
 
 IDE: Python
 
-Moduły: Pandas, Random, Datetime, CSV
+🧩 Moduły: Pandas, Random, Datetime, CSV
 
 Struktura projektu:
 Projekt został zorganizowany w sposób modularny, aby oddzielić dane, kod źródłowy, dokumentację i wyniki generowania.  
