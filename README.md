@@ -27,6 +27,29 @@ To run tests:
 python -m pytest -v
 ```
 
+✨ Key Features
+
+- Realistic procurement dataset generation — creates synthetic Purchase Orders, suppliers, users, companies and delivery windows that mimic SAP Ariba patterns.
+
+- Business‑driven logic — all values follow procurement rules: lead times, approval flows, delivery dates, spend categories, and supplier behavior.
+
+- Regex‑based validation — every generated field is validated using strict regex rules to ensure consistency and realism.
+
+- GDPR‑safe synthetic data — no personal or confidential information; all records are fully anonymized and safe for analytics training.
+
+- High performance generation — produces 50k+ rows in seconds, suitable for analytics, dashboards, and machine learning prototyping.
+
+- Configurable output structure — users can adjust the number of records, date ranges, supplier pools, spend categories, and business rules.
+
+- SAP Ariba‑aligned fields — column names and logic follow typical Ariba procurement objects (PO, Supplier, User, Company, Amount, Dates).
+
+- Ready‑to‑use CSV output — generated files are saved in the /output folder and can be immediately imported into Power BI, Python, SQL or Excel.
+
+- Deterministic and reproducible — seed‑based generation ensures identical results for testing and documentation.
+
+- Extensible architecture — easy to add new fields, business rules, validation layers, or additional procurement modules (invoices, contracts, sourcing events).
+
+
 How to adjust the amount of mock data? 🧪 
 1. In the row 219 change the number in brackets --> for _ in range(2500)
 
@@ -90,6 +113,29 @@ Aby uruchomić testy:
 ```bash
 python -m pytest -v
 ```
+
+✨ Kluczowe funkcjonalności:
+
+- Realistyczne generowanie danych zakupowych — tworzy syntetyczne zamówienia, dostawców, użytkowników, firmy i okna dostaw zgodne z logiką SAP Ariba.
+
+- Logika biznesowa oparta na procesach zakupowych — wszystkie wartości podlegają regułom: lead time, ścieżki akceptacji, daty dostaw, kategorie wydatków, zachowania dostawców.
+
+- Walidacja oparta na regexach — każdy wygenerowany atrybut jest sprawdzany za pomocą precyzyjnych wyrażeń regularnych.
+
+- Dane zgodne z GDPR — brak danych osobowych; wszystkie rekordy są w pełni anonimowe i bezpieczne do celów analitycznych.
+
+- Wysoka wydajność — generuje ponad 50 tys. wierszy w kilka sekund, idealne do dashboardów, testów i prototypów ML.
+
+- Konfigurowalna struktura danych — użytkownik może ustawić liczbę rekordów, zakres dat, pulę dostawców, kategorie wydatków i reguły biznesowe.
+
+- Pola zgodne z SAP Ariba — nazwy kolumn i logika odwzorowują typowe obiekty Ariba (PO, Supplier, User, Company, Amount, Dates).
+
+- Gotowy plik CSV — pliki są zapisywane w folderze /output i można je od razu użyć w Power BI, Pythonie, SQL lub Excelu.
+
+- Deterministyczne wyniki — generowanie oparte na seedzie pozwala na powtarzalne testy i dokumentację.
+
+- Łatwa rozbudowa — prosta architektura umożliwia dodawanie nowych pól, reguł, walidacji lub modułów (faktury, kontrakty, sourcing).
+
 
 Jak zmienić ilość danych testowych? 🧪 
 1. W wierszu 219 zmień liczbę w nawiasach --> for _ in range(2500)
