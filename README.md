@@ -32,6 +32,40 @@ Each folder serves a clear purpose:
 | **LICENSE** | Project license information (MIT). |
 | **.gitignore** | Excludes unnecessary files from Git tracking. |
 
+SAP-Ariba-Mock-Data-Generator-for-Procurement-Analytics/
+├── data/
+│   ├── mock_regex.xlsx
+│   ├── regex1.xlsx
+│   └── README.md
+│
+├── data_output/
+│   └── procurement_mock_2500.xlsx
+│
+├── docs/
+│   └── data_description.ipynb
+│
+├── images/
+│   ├── mock1.png
+│   ├── mock2.png
+│   ├── mock3.png
+│   └── po_status.png
+│
+├── src/
+│   ├── __init__.py
+│   ├── procurement_dataset1.py
+│   └── procurement_mock_functions.py
+│
+├── tests/
+│   └── (test files)
+│
+├── Dockerfile
+├── LICENSE
+├── pytest.ini
+├── README.md
+├── requirements.txt
+└── .gitignore
+
+
 📁 How to run?
 1. Copy the repository.
 2. Install the modules pip install -r requirements.txt
@@ -168,6 +202,40 @@ Każdy folder pełni jasno określoną funkcję:
 | **pytest.ini** | Konfiguracja testów automatycznych. |
 | **LICENSE** | Informacja o licencji projektu (MIT). |
 | **.gitignore** | Plik wykluczający niepotrzebne elementy z repozytorium Git. |
+
+SAP-Ariba-Mock-Data-Generator-for-Procurement-Analytics/
+├── data/
+│   ├── mock_regex.xlsx
+│   ├── regex1.xlsx
+│   └── README.md
+│
+├── data_output/
+│   └── procurement_mock_2500.xlsx
+│
+├── docs/
+│   └── data_description.ipynb
+│
+├── images/
+│   ├── mock1.png
+│   ├── mock2.png
+│   ├── mock3.png
+│   └── po_status.png
+│
+├── src/
+│   ├── __init__.py
+│   ├── procurement_dataset1.py
+│   └── procurement_mock_functions.py
+│
+├── tests/
+│   └── (test files)
+│
+├── Dockerfile
+├── LICENSE
+├── pytest.ini
+├── README.md
+├── requirements.txt
+└── .gitignore
+
 
 📁 Jak uruchomić? 
 1. Sklonuj repozytorium.
