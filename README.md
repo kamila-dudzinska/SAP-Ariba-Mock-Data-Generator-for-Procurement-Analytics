@@ -2,6 +2,8 @@
 
 A Python-based tool designed to generate synthetic, production-grade Purchase Order (PO) datasets, including the SAP Ariba Reporting standards.📊🧪 
 
+![demo](images/gui_g.gif)
+
 🚀A Python-based tool designed to generate synthetic, production-grade Purchase Order (PO) datasets, including the SAP Ariba Reporting standards. It accurately mirrors the technical architecture, data engineering principles, and business logic of the SAP Ariba ecosystem.
 
 💡 The Problem It SolvesProcurement professionals transitioning into data analytics face a major roadblock: the inability to work with real corporate data due to strict compliance rules, non-disclosure agreements (NDAs), and GDPR regulations.
@@ -10,7 +12,7 @@ A Python-based tool designed to generate synthetic, production-grade Purchase Or
 
 IDE: Python
 
-🧩 Modules: Pandas, Random, Datetime, CSV
+🧩 Modules: Pandas, Random, Datetime, CSV, openpyxl
 
 Project's Structure:
 
@@ -73,6 +75,51 @@ python -m pytest -v
 
 How to adjust the amount of mock data? 🧪 
 1. In the row 219 change the number in brackets --> for _ in range(2500)
+
+
+🚀 Project Expansion: Executable & MSI Installer
+This repository has been extended beyond the original Python script into a fully deployable Windows application.
+The project now includes:
+
+a stand‑alone .exe file built with PyInstaller (--onefile, --windowed, custom icon),
+
+a user‑friendly .msi installer created with WiX Toolset, allowing users to choose any installation directory.
+
+As a result, anyone — including non‑technical users — can install and run the application without Python or additional dependencies. After installation, the program can be launched like any standard Windows app and will generate the required dataset automatically.
+
+⚙️ Technical Steps:
+1. Building the executable
+bash
+```
+pyinstaller --onefile --windowed --icon=ikonka.ico gui_one.py
+```
+Output: gui_one.exe — a self‑contained binary with no external DLL requirements.
+
+3. Creating the MSI installer:
+bash
+```
+candle installer.wxs
+light installer.wixobj -ext WixUIExtension -out SAP_Mock_Generator.msi
+```
+Output: SAP_Mock_Generator.msi — an installer with directory selection and application icon support.
+
+5. Installation workflow:
+User selects the installation folder.
+
+Installer deploys the executable and icon.
+
+Application is ready to run immediately after installation.
+
+🧠 Debugging & Lessons learned:
+
+* The initial Failed to load Python DLL error was caused by PyInstaller’s onedir mode.
+* 
+* Switching to onefile resolved all dependency issues.
+
+* WiX Toolset requires a strict two‑step build (candle → light) executed in the same directory as the .wxs file.
+
+*The final packaging pipeline is stable, reproducible, and easy to maintain for future releases.
+
 
 💱 Why I decided for Python instead of AI? 
 
@@ -137,9 +184,11 @@ The script in the attachment. Below some pictures of code and generated excel fi
 
 
 
-___________________________ POLISH VERSION ___________________________
+________________________________ POLISH VERSION ________________________________
 
 Generator Danych Mockowych SAP Ariba dla Analityki Zakupowej (Procurement) 📊🧪 
+
+![demo](images/gui_g.gif)
 
 🚀 Narzędzie w Pythonie zaprojektowane do generowania syntetycznych, produkcyjnej jakości zestawów danych zamówień zakupu (Purchase Orders). Odzwierciedla ono dokładną architekturę techniczną, inżynierię danych oraz logikę biznesową systemu SAP Ariba.
 
@@ -149,7 +198,7 @@ Generator Danych Mockowych SAP Ariba dla Analityki Zakupowej (Procurement) 📊�
 
 IDE: Python
 
-🧩 Moduły: Pandas, Random, Datetime, CSV
+🧩 Moduły: Pandas, Random, Datetime, CSV, openpyxl
 
 Struktura projektu:
 Projekt został zorganizowany w sposób modularny, aby oddzielić dane, kod źródłowy, dokumentację i wyniki generowania.  
@@ -252,11 +301,12 @@ Program instaluje się wraz z ikoną.
 Po zakończeniu można od razu uruchomić aplikację.
 
 🧠 Debugging i wnioski:
-Początkowy błąd Failed to load Python DLL wynikał z użycia trybu onedir — rozwiązano przez przejście na onefile.
 
-Testy wykazały, że instalator działa poprawnie na różnych ścieżkach instalacji.
+* Początkowy błąd Failed to load Python DLL wynikał z użycia trybu onedir — rozwiązano przez przejście na onefile.
 
-Proces budowy został uproszczony do dwóch komend (candle + light), co pozwala na szybkie generowanie nowych wersji.
+* Testy wykazały, że instalator działa poprawnie na różnych ścieżkach instalacji.
+
+* Proces budowy został uproszczony do dwóch komend (candle + light), co pozwala na szybkie generowanie nowych wersji.
 
 
 
@@ -315,7 +365,7 @@ Fragenty kodu:
 ![kod](images/mock1.png)
 ![kod2](images/mock2.png)
 ![raport csv](images/mock3.png)
-![interfejs graficzny]
+![interfejs graficzny](images/gui_i.png)
 
 <hr style="border:3px solid #AEC6CF;">
 
