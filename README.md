@@ -228,7 +228,9 @@ Po uruchomieniu aplikacja generuje odpowiedni dataset zgodnie z logiką projektu
 Budowa pliku .exe
 
 bash
+```
 pyinstaller --onefile --windowed --icon=ikonka.ico gui_one.py
+```
 → wynik: gui_one.exe
 
 Tworzenie instalatora
