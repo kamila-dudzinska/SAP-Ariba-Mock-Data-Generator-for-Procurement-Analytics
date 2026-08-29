@@ -190,7 +190,9 @@ ________________________________ POLISH VERSION ________________________________
 
 Generator Danych Mockowych SAP Ariba dla Analityki Zakupowej (Procurement) 📊🧪 
 
+
 ![demo](images/gui_g.gif)
+
 
 🚀 Narzędzie w Pythonie zaprojektowane do generowania syntetycznych, produkcyjnej jakości zestawów danych zamówień zakupu (Purchase Orders). Odzwierciedla ono dokładną architekturę techniczną, inżynierię danych oraz logikę biznesową systemu SAP Ariba.
 
