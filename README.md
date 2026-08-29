@@ -176,6 +176,8 @@ Każdy folder pełni jasno określoną funkcję:
 2. Zainstaluj moduły pip install -r requirements.txt
 3. Uruchom skrypt
 
+1. Plik msi - wysatrczy zainstalować i urochomić. 
+
 🧪 Jak uruchomić testy
 
 Projekt korzysta z frameworka **pytest**.
@@ -210,8 +212,50 @@ python -m pytest -v
 
 Jak zmienić ilość danych testowych? 🧪 
 1. W wierszu 219 zmień liczbę w nawiasach --> for _ in range(2500)
+2. Skorzystać z pliku msi - zainstalować program i uruchomić. W graficznym interfejsie będzie możliwość ręcznego wybrania ilości rekordów.
 
-💱 Dlaczego zdecydowałem się na Python zamiast AI?
+🧩 Rozbudowa projektu
+Repozytorium zostało rozszerzone o:
+
+plik wykonywalny .exe zbudowany przy użyciu PyInstaller (--onefile, --windowed, --icon),
+
+instalator .msi stworzony w WiX Toolset, który umożliwia wybór katalogu instalacji i automatyczne dodanie ikony aplikacji.
+
+Dzięki temu każda osoba może uruchomić program bez konieczności instalacji Pythona — wystarczy pobrać instalator i zainstalować aplikację jak klasyczny program Windows.
+Po uruchomieniu aplikacja generuje odpowiedni dataset zgodnie z logiką projektu
+
+⚙️ Kroki techniczne
+Budowa pliku .exe
+
+bash
+pyinstaller --onefile --windowed --icon=ikonka.ico gui_one.py
+→ wynik: gui_one.exe
+
+Tworzenie instalatora
+
+bash
+```candle installer.wxs
+light installer.wixobj -ext WixUIExtension -out SAP_Mock_Generator.msi```
+→ wynik: SAP_Mock_Generator.msi
+
+Instalacja:
+
+Użytkownik wybiera folder instalacji.
+
+Program instaluje się wraz z ikoną.
+
+Po zakończeniu można od razu uruchomić aplikację.
+
+🧠 Debugging i wnioski:
+Początkowy błąd Failed to load Python DLL wynikał z użycia trybu onedir — rozwiązano przez przejście na onefile.
+
+Testy wykazały, że instalator działa poprawnie na różnych ścieżkach instalacji.
+
+Proces budowy został uproszczony do dwóch komend (candle + light), co pozwala na szybkie generowanie nowych wersji.
+
+
+
+💱 Dlaczego zdecydowałam się na Python zamiast AI?
 
 --> ponieważ skrypt działa szybciej, możemy wygenerować fikcyjny zbiór danych o 50 000 wierszach w kilka sekund, a AI zajęłoby to wieki, jeśli w ogóle by się nie zawiesiło.
 
@@ -266,6 +310,7 @@ Fragenty kodu:
 ![kod](images/mock1.png)
 ![kod2](images/mock2.png)
 ![raport csv](images/mock3.png)
+![interfejs graficzny]
 
 <hr style="border:3px solid #AEC6CF;">
 
