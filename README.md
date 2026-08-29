@@ -229,7 +229,7 @@ Każdy folder pełni jasno określoną funkcję:
 2. Zainstaluj moduły pip install -r requirements.txt
 3. Uruchom skrypt
 
-1. Plik msi - wysatrczy zainstalować i urochomić. 
+1. Plik msi w Realeases - wysatrczy zainstalować i urochomić. 
 
 🧪 Jak uruchomić testy
 
