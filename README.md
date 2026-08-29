@@ -235,8 +235,11 @@ Tworzenie instalatora
 
 bash
 ```candle installer.wxs
-light installer.wixobj -ext WixUIExtension -out SAP_Mock_Generator.msi```
+light installer.wixobj -ext WixUIExtension -out SAP_Mock_Generator.msi
+```
+
 → wynik: SAP_Mock_Generator.msi
+
 
 Instalacja:
 
