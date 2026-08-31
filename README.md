@@ -1,6 +1,6 @@
 # SAP-Ariba-Mock-Data-Generator-for-Procurement-Analytics
 
-A Python-based tool designed to generate synthetic, production-grade Purchase Order (PO) datasets, including the SAP Ariba Reporting standards.📊🧪 
+A Python-based tool designed to generate synthetic, production-grade Purchase Order (PO) datasets, including the SAP Ariba Reporting standards.📊
 
 
 ![demo](images/gui_g.gif)
@@ -188,7 +188,7 @@ The script in the attachment. Below some pictures of code and generated excel fi
 
 ________________________________ POLISH VERSION ________________________________
 
-Generator Danych Mockowych SAP Ariba dla Analityki Zakupowej (Procurement) 📊🧪 
+Generator Danych Mockowych SAP Ariba dla Analityki Zakupowej (Procurement) 📊
 
 
 ![demo](images/gui_g.gif)
