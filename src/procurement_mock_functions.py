@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jun 27 18:02:37 2026
+Extended on Thu Oct 22 20:05:20 2026
 
 @author: Kamila Dudzińska
 
@@ -21,15 +22,15 @@ Module with functions
 
 # IMPORT MODULES
 import random
+import re
 from datetime import datetime, timedelta
-import procurement_mock_functions
 
 
 # FUNCTIONS
 
 
 def weighted_choice(choices):
-     """
+    """
     Selects a random value from weighted ranges.
 
     This function calculates the order amount by taking business-defined
@@ -287,29 +288,70 @@ def generate_invoice_number(existing_inv:str) ->str:
         random_inv = f'FV/{year}/{month}/{random_num}' 
         if random_inv not in existing_inv:
             return random_inv
-    
-    
-                
 
 
 
+# DATA VALIDATION - REGEX
+# one rule per column, based on the rules in data/regex1.xlsx
+REGEX_RULES = {
+    "PO Number":      r"^6000\d{6}$",                 # 6000 + 6 digits
+    "Company Code":   r"^[A-Z0-9]{4}$",               # e.g. A001, CH01
+    "Supplier ID":    r"^200\d{7}$",                  # 200 + 7 digits
+    "Requester ID":   r"^PL[A-Z]{6}$",                # PL + 3 + 3 letters
+    "Requester Mail": r"^[a-z]+\.[a-z]+@firma\.com$", # name.surname@...
+    "Create Date":    r"^(\d{4}-\d{2}-\d{2}|\d{2}\.\d{2}\.\d{4})$",  # 2026-03-25 or 25.03.2026
+    "Delivery Date":  r"^(\d{4}-\d{2}-\d{2}|\d{2}\.\d{2}\.\d{4})$",
+    "Amount":         r"^\d+(\.\d{1,2})?$",           # max 2 decimals
+    "Currency":       r"^[A-Z]{3}$",                  # ISO 4217, e.g. EUR
+    "Invoice Number": r"^FV/\d{4}/\d{2}/\d{4}$",      # FV/2026/03/0914
+    "Payment Terms":  r"^\d+$",                       # days
+}
+
+# empty values are allowed - exceptions:
+OPTIONAL_FIELDS = {"Delivery Date", "Invoice Number", "Payment Terms"}
 
 
+def validate_record(record: dict) -> list[str]:
+    """
+    Checks one generated record against REGEX_RULES.
+
+    Only columns present in the record are checked, so the same function
+    works for the PO report and for the invoice report.
+
+    Args:
+        record (dict): one row, e.g. {"PO Number": 6000123456, ...}
+
+    Returns:
+        list[str]: names of the columns that do not match their rule.
+                   An empty list means the record is valid.
+
+    Example:
+        >>> validate_record({"PO Number": 6000123456, "Currency": "eur"})
+        ['Currency']
+    """
+    errors = []
+    for field, pattern in REGEX_RULES.items():
+        if field not in record:
+            continue
+        value = record[field]
+        if value is None or str(value) == "":
+            if field not in OPTIONAL_FIELDS:
+                errors.append(field)
+            continue
+        if not re.fullmatch(pattern, str(value)):
+            errors.append(field)
+    return errors
 
 
+def validate_records(records: list[dict]) -> dict[str, int]:
+    """
+    Validates all records and counts errors per column.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    Returns:
+        dict[str, int]: e.g. {"Supplier ID": 2500}. Empty dict = all valid.
+    """
+    summary = {}
+    for record in records:
+        for field in validate_record(record):
+            summary[field] = summary.get(field, 0) + 1
+    return summary
