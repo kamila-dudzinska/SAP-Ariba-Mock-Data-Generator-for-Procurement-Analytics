@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jun 20 20:00:27 2026
+Extended on Thu Oct 22 19:05:20 2026
 
 @author: Kamila Dudzińska
 
@@ -20,6 +21,7 @@ Goal:   script created for procurement specialist and expert, who want to train
 import csv
 import random
 from datetime import datetime, timedelta
+from procurement_mock_functions import validate_records
 
 # RANDOM SEED
 random.seed(42)
@@ -254,6 +256,15 @@ if __name__ =="__main__":
             "Currency": currency
         }
         records.append(record)
+
+    # DATA VALIDATION - every record checked with regex
+    validation_errors = validate_records(records)
+    if validation_errors:
+        print("Validation: some values do not match the rules:")
+        for field, count in validation_errors.items():
+            print(f"  {field}: {count} record(s)")
+    else:
+        print(f"Validation OK: all {len(records)} records match the regex rules.")
 
     # write csv
     with open("procurement_mock_2500.csv", mode="w", newline="", encoding="utf-8") as file:
