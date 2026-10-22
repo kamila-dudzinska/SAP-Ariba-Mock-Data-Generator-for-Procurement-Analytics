@@ -1,24 +1,4 @@
 # -*- coding: utf-8 -*-
-
-import pandas as pd
-import os
-
-print(os.getcwd())
-
-# %%
-#zmiana working directory
-new_dir = r"C:\Users\lila_\Desktop\GitHub\sap_mock_dataset\src"
-os.chdir(new_dir)
-print(new_dir)
-
-# %%
-"""
-Created on Sat Aug 15 17:11:51 2026
-
-@author: lila_
-"""
-
-# -*- coding: utf-8 -*-
 """
 Created on Fri Aug 1 :18:36 2026
 
