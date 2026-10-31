@@ -284,7 +284,7 @@ def generate_invoice_number(existing_inv:str) ->str:
     while True:
         year = '2026'
         month = f"{random.randint(1,12):02d}"
-        random_num = f'{random.randint(1,999):04d}'
+        random_num = f'{random.randint(1,9999):04d}'
         random_inv = f'FV/{year}/{month}/{random_num}' 
         if random_inv not in existing_inv:
             return random_inv
@@ -297,8 +297,8 @@ REGEX_RULES = {
     "PO Number":      r"^6000\d{6}$",                 # 6000 + 6 digits
     "Company Code":   r"^[A-Z0-9]{4}$",               # e.g. A001, CH01
     "Supplier ID":    r"^200\d{7}$",                  # 200 + 7 digits
-    "Requester ID":   r"^PL[A-Z]{6}$",                # PL + 3 + 3 letters
-    "Requester Mail": r"^[a-z]+\.[a-z]+@firma\.com$", # name.surname@...
+    "Requester ID":   r"^PL[A-Z]{4,6}$",              # PL + 4-6 letters. The same as in project Invio & Mobi.
+    "Requester Mail": r"^[a-z]+\.[a-z]+@example\.com$", # domena testowa @example.com 
     "Create Date":    r"^(\d{4}-\d{2}-\d{2}|\d{2}\.\d{2}\.\d{4})$",  # 2026-03-25 or 25.03.2026
     "Delivery Date":  r"^(\d{4}-\d{2}-\d{2}|\d{2}\.\d{2}\.\d{4})$",
     "Amount":         r"^\d+(\.\d{1,2})?$",           # max 2 decimals

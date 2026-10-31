@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jun 27 18:02:37 2026
+Extended on Sat Oct 21 18:59:49 2026
+Extended on Sat Oct 31 20:11:59 2026
 
 @author: Kamila Dudzińska
 
@@ -23,8 +25,7 @@ Module with functions
 # IMPORT MODULES
 import random
 from datetime import datetime, timedelta
-import openpyxl
-import csv
+import openpyxl          
 import pandas as pd
 
 # FUNCTIONS 
@@ -212,7 +213,7 @@ def get_order_status(delivery_date: datetime | str | None, today: datetime) -> s
         'ordered'
     """
 
-    # --- 1. Pusta data dostawy -> tylko "ordered" lub "confirmed"
+    # empty delivery date - then status 'ordered' or 'confirmed'
     if delivery_date is None or delivery_date == "" or str(delivery_date).lower() == "nan":
         return random.choices(
             population=["ordered", "confirmed"],
@@ -220,14 +221,15 @@ def get_order_status(delivery_date: datetime | str | None, today: datetime) -> s
             k=1
         )[0]
 
-    # --- 2. Jeśli mamy string, zamieniamy na datetime
+    # str --> datetime
     if isinstance(delivery_date, str):
         delivery_date = datetime.strptime(delivery_date, "%d-%m-%Y")
 
-    # --- 3. Granica 10 dni temu
+    # Max 10 days ago
     ten_days_ago = today - timedelta(days=10)
 
-    # --- 4. Delivery Date w ostatnich 10 dniach (do dziś)
+    # Delivery date >= CURRENT_DATE - INTERVAL '10 day' 
+    # AND delivery_date <= CURRENT_DATE (let's love SQL)
     if ten_days_ago <= delivery_date <= today:
         return random.choices(
             population=["received", "invoiced"],
@@ -235,7 +237,7 @@ def get_order_status(delivery_date: datetime | str | None, today: datetime) -> s
             k=1
         )[0]
 
-    # --- 5. Delivery Date starsza niż 10 dni
+    # Delivery date < CURRENT_DATE - INTERVAL '10 day' ;)
     if delivery_date < ten_days_ago:
         return random.choices(
             population=["received", "confirmed", "invoiced"],
@@ -243,7 +245,7 @@ def get_order_status(delivery_date: datetime | str | None, today: datetime) -> s
             k=1
         )[0]
 
-    # --- 6. Delivery Date w przyszłości (awaryjnie)
+    # Delivery_date in the future*
     return "ordered"
 
 
@@ -268,7 +270,7 @@ def generate_invoice_number(existing_inv:str) ->str:
     while True:
         year = '2026'
         month = f"{random.randint(1,12):02d}"
-        random_num = f'{random.randint(1,999):04d}'
+        random_num = f'{random.randint(1,9999):04d}'
         random_inv = f'FV/{year}/{month}/{random_num}' 
         if random_inv not in existing_inv:
             return random_inv
@@ -281,7 +283,13 @@ def generate_invoice_number(existing_inv:str) ->str:
 
 # GENERATED DATA FOR FURTHER ACTIONS
 # company codes - created manually basing on my work expierience
-company_codes = ["A001", "A002", "B001", "B002", "CH01", "CH02", "D001", "D002", "D003", "D004", "N001", "F001", "F002", "F003", "S001", "S002"]
+company_codes = ["A001", "A002", 
+                 "B001", "B002", 
+                 "CH01", "CH02", 
+                 "D001", "D002", "D003", "D004", 
+                 "N001", 
+                 "F001", "F002", "F003", 
+                 "S001", "S002"]
 
 #created by copilot basing on the rules in attched excel file
 suppliers = {
@@ -370,28 +378,28 @@ suppliers = {
 }
 
 
-#created by copilot basing on the rules in attched excel file (module re)
+#created by copilot +  @example.com - test domain (31.10.2026)
 users = [
-    {"Requestor_ID": "PLANNMAC", "Name": "Anna Maciejewska", "Mail": "anna.maciejewska@firma.com"},
-    {"Requestor_ID": "PLJANNOW", "Name": "Jan Nowak", "Mail": "jan.nowak@firma.com"},
-    {"Requestor_ID": "PLEWAZIE", "Name": "Ewa Zielinska", "Mail": "ewa.zielinska@firma.com"},
-    {"Requestor_ID": "PLPIWONO", "Name": "Piotr Wozniak", "Mail": "piotr.wozniak@firma.com"},
-    {"Requestor_ID": "PLKAMAZU", "Name": "Katarzyna Mazur", "Mail": "katarzyna.mazur@firma.com"},
-    {"Requestor_ID": "PLMIWISI", "Name": "Michał Wiśniewski", "Mail": "michal.wisniewski@firma.com"},
-    {"Requestor_ID": "PLAGNNO", "Name": "Agnieszka Nowak", "Mail": "agnieszka.nowak@firma.com"},
-    {"Requestor_ID": "PLTOZIE", "Name": "Tomasz Zieliński", "Mail": "tomasz.zielinski@firma.com"},
-    {"Requestor_ID": "PLMOLEW", "Name": "Monika Lewandowska", "Mail": "monika.lewandowska@firma.com"},
-    {"Requestor_ID": "PLPAKAC", "Name": "Paweł Kaczmarek", "Mail": "pawel.kaczmarek@firma.com"},
-    {"Requestor_ID": "PLKIWOJ", "Name": "Kinga Wójcik", "Mail": "kinga.wojcik@firma.com"},
-    {"Requestor_ID": "PLLUKAM", "Name": "Łukasz Kamiński", "Mail": "lukasz.kaminski@firma.com"},
-    {"Requestor_ID": "PLNASZY", "Name": "Natalia Szymańska", "Mail": "natalia.szymanska@firma.com"},
-    {"Requestor_ID": "PLJADUD", "Name": "Jakub Duda", "Mail": "jakub.duda@firma.com"},
-    {"Requestor_ID": "PLMAPAW", "Name": "Magdalena Pawlak", "Mail": "magdalena.pawlak@firma.com"},
-    {"Requestor_ID": "PLMARKRA", "Name": "Marcin Krawczyk", "Mail": "marcin.krawczyk@firma.com"},
-    {"Requestor_ID": "PLBANO", "Name": "Barbara Nowicka", "Mail": "barbara.nowicka@firma.com"},
-    {"Requestor_ID": "PLGRWRO", "Name": "Grzegorz Wrona", "Mail": "grzegorz.wrona@firma.com"},
-    {"Requestor_ID": "PLJOLIS", "Name": "Joanna Lis", "Mail": "joanna.lis@firma.com"},
-    {"Requestor_ID": "PLDASZA", "Name": "Dariusz Zając", "Mail": "dariusz.zajac@firma.com"},
+    {"Requestor_ID": "PLANNMAC", "Name": "Anna Maciejewska", "Mail": "anna.maciejewska@example.com"},
+    {"Requestor_ID": "PLJANNOW", "Name": "Jan Nowak", "Mail": "jan.nowak@example.com"},
+    {"Requestor_ID": "PLEWAZIE", "Name": "Ewa Zielinska", "Mail": "ewa.zielinska@example.com"},
+    {"Requestor_ID": "PLPIWONO", "Name": "Piotr Wozniak", "Mail": "piotr.wozniak@example.com"},
+    {"Requestor_ID": "PLKAMAZU", "Name": "Katarzyna Mazur", "Mail": "katarzyna.mazur@example.com"},
+    {"Requestor_ID": "PLMIWISI", "Name": "Michał Wiśniewski", "Mail": "michal.wisniewski@example.com"},
+    {"Requestor_ID": "PLAGNNO", "Name": "Agnieszka Nowak", "Mail": "agnieszka.nowak@example.com"},
+    {"Requestor_ID": "PLTOZIE", "Name": "Tomasz Zieliński", "Mail": "tomasz.zielinski@example.com"},
+    {"Requestor_ID": "PLMOLEW", "Name": "Monika Lewandowska", "Mail": "monika.lewandowska@example.com"},
+    {"Requestor_ID": "PLPAKAC", "Name": "Paweł Kaczmarek", "Mail": "pawel.kaczmarek@example.com"},
+    {"Requestor_ID": "PLKIWOJ", "Name": "Kinga Wójcik", "Mail": "kinga.wojcik@example.com"},
+    {"Requestor_ID": "PLLUKAM", "Name": "Łukasz Kamiński", "Mail": "lukasz.kaminski@example.com"},
+    {"Requestor_ID": "PLNASZY", "Name": "Natalia Szymańska", "Mail": "natalia.szymanska@example.com"},
+    {"Requestor_ID": "PLJADUD", "Name": "Jakub Duda", "Mail": "jakub.duda@example.com"},
+    {"Requestor_ID": "PLMAPAW", "Name": "Magdalena Pawlak", "Mail": "magdalena.pawlak@example.com"},
+    {"Requestor_ID": "PLMARKRA", "Name": "Marcin Krawczyk", "Mail": "marcin.krawczyk@example.com"},
+    {"Requestor_ID": "PLBANO", "Name": "Barbara Nowicka", "Mail": "barbara.nowicka@example.com"},
+    {"Requestor_ID": "PLGRWRO", "Name": "Grzegorz Wrona", "Mail": "grzegorz.wrona@example.com"},
+    {"Requestor_ID": "PLJOLIS", "Name": "Joanna Lis", "Mail": "joanna.lis@example.com"},
+    {"Requestor_ID": "PLDASZA", "Name": "Dariusz Zając", "Mail": "dariusz.zajac@example.com"},
 ]
 
 
@@ -418,108 +426,71 @@ amount_ranges = [
 ]
 
 
-# DATA CREATION
-existing_po = set()             #emoty set
-records = []                    #empty lists
-existing_inv = set()
+#   DATA CREATION
+#   2 sheets generated - extenden (31.10.2026)
+#   - "Ariba"    -> dane zamówień (PO)
+#   - "Invoices" -> te same zamówienia + dane faktur (PO + invoices)
+def generate_mock_data(record_count: int, selected_company_codes: list[str], output_file: str,
+                       start_date: datetime, end_date: datetime) -> str:
+    '''
+    Generates mock SAP Ariba data (POs + invoices) and saves it to an Excel file
+    with two sheets: "Ariba" and "Invoices".
 
-start_date = datetime.strptime("01.01.2026", "%d.%m.%Y")
-end_date = datetime.strptime("31.05.2026", "%d.%m.%Y")
-today = datetime.today()
-# do daty początkowej dodajemy randomową liczbę dni z przedziału (data końcowa -data początkowa)
-creation_date = start_date + timedelta(days=random.randint(0, (end_date - start_date).days))
+    Args:
+        record_count (int): number of records chosen on the slider.
+        selected_company_codes (list[str]): Company Codes ticked in the GUI.
+        output_file (str): path of the .xlsx file to save.
+        start_date (datetime): first possible PO create date (from GUI).
+        end_date (datetime): last possible PO create date (from GUI).
 
-def generate_mock_data(record_count: int, selected_company_codes: list[str], output_file: str):
-    existing_po = set()
+    Returns:
+        str: path of the saved file.
+    '''
+    
+    existing_po = set()     #set to avoid duplicates
+    existing_inv = set()
     records = []
-    start_date = datetime.strptime("2026-01-01", "%Y-%m-%d")
-    end_date = datetime.strptime("2026-04-30", "%Y-%m-%d")
+
+    # PO datetime range - daty od/do przychodzą teraz z GUI (wcześniej na sztywno 01.01-31.05.2026)
     today = datetime.today()
 
+    # number of PO records
     for _ in range(record_count):
         po_number = generate_po_number(existing_po)
         existing_po.add(po_number)
 
+        # Company Code - one random from GUI
         company_code = random.choice(selected_company_codes)
+
+        # losowy klucz dostawcy i nazwa (value) ze słownika
         supplier_number = random.choice(list(suppliers.keys()))
         supplier_name = suppliers[supplier_number]
+
         user = random.choice(users)
 
+        # do daty początkowej dodajemy losową liczbę dni z przedziału (data końcowa - data początkowa)
         creation_date = start_date + timedelta(days=random.randint(0, (end_date - start_date).days))
+
+        # data dostawy: data utworzenia + 1 do 60 dni
         delivery_date = generate_delivery_date(creation_date, today)
-        status = random.choice(status_choices)
-        amount = weighted_choice(amount_ranges)
-        currency = random.choice(currency_choices)
 
-        record = {
-            "PO Number": po_number,
-            "Company Code": company_code,
-            "Supplier ID": supplier_number,
-            "Supplier Name": supplier_name,
-            "Requester ID": user["Requestor_ID"],
-            "Requester Name": user["Name"],
-            "Requester Mail": user["Mail"],
-            "Create Date": creation_date.strftime("%Y-%m-%d"),
-            "Delivery Date": delivery_date,
-            "Order Status": status,
-            "Amount": amount,
-            "Currency": currency
-        }
-
-        records.append(record)
-
-    with open(output_file, mode="w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, 
-                                fieldnames=list(records[0].keys()), 
-                                delimiter=';')
-        writer.writeheader()
-        for rec in records:
-            writer.writerow(rec)
-
-    return output_file
-
-
-
-
-
-#MAIN LOOP
-if __name__ =="__main__":
-    print("I'm starting to generate data for the SAP Ariba report")
-    
-    for _ in range(100):
-        po_number = generate_po_number(existing_po)
-        existing_po.add(po_number)
-
-        company_code = random.choice(company_codes)
-        
-        #choose a random.choice() from keys()
-        supplier_number = random.choice(list(suppliers.keys()))
-        supplier_name = suppliers[supplier_number]
-    
-        user = random.choice(users)
-        
-        #from starting date we add the date from range(end_date - start_date)
-        creation_date = start_date + timedelta(days=random.randint(0, (end_date - start_date).days))
-        
-        # to creation_date add a number of days from range (1,30)
-        delivery_date = generate_delivery_date(creation_date, today)
-        
+        # status zamówienia zależy od daty dostawy (get_order_status)
         order_status = get_order_status(delivery_date, today)
-        
+
         invoice_number = generate_invoice_number(existing_inv)
         existing_inv.add(invoice_number)
-        
-        #invoice_date add a number of days from range(10,90)
+
+        # data faktury: data dostawy + termin płatności (10 do 90 dni)
         invoice_date, payment_terms = generate_invoice_date(delivery_date, today)
-    
+
         invoice_status = random.choice(invoice_choices)
         amount = weighted_choice(amount_ranges)
-        
+
+        # kwota faktury: zwykle = kwota PO, przy statusie "hold" może się różnić (do +/- 20%)
         invoice_amount = calculate_invoice_amount(amount, order_status, invoice_status)
         currency = random.choice(currency_choices)
-        
-        
-    
+
+        # one row - one result
         record = {
             "PO Number": po_number,
             "Company Code": company_code,
@@ -531,68 +502,60 @@ if __name__ =="__main__":
             "Order Status": order_status,
             "Create Date": creation_date.strftime("%d.%m.%Y"),
             "Delivery Date": delivery_date.strftime("%d.%m.%Y"),
-            'Invoice Date': invoice_date,
+            "Invoice Date": invoice_date,
             "Invoice Status": invoice_status,
             "Amount": amount,
             "Invoice Amount": invoice_amount,
             "Currency": currency,
             "Payment Terms": payment_terms,
-            "Invoice Number": invoice_number 
+            "Invoice Number": invoice_number
         }
         records.append(record)
-        
-    #konwersja listy na obiekt DataFrame
-    df_all = pd.DataFrame(records)    
-    
-    #definiujemy, które kolumny mają ić do której zakładki
-    columns_tab1 = ['PO Number', 
-                          'Company Code', 
-                          'Supplier ID',
-                          'Supplier Name',
-                          'Requester ID',
-                          'Requester Name',
-                          'Requester Mail',
-                          'Create Date',
-                          'Delivery Date',
-                          'Order Status',
-                          'Amount',
-                          'Currency']
-    
-    
-    columns_tab2 = ['PO Number', 
-                          'Company Code', 
-                          'Supplier ID',
-                          'Supplier Name',
-                          'Requester ID',
-                          'Requester Name',
-                          'Requester Mail',
-                          'Delivery Date',
-                          'Order Status',
-                          'Amount',
-                          'Invoice Number',
-                          'Invoice Date',
-                          'Invoice Status',
-                          'Invoice Amount',
-                          'Currency',
-                          'Payment Terms']
-    
-    #filtrowanie tabeli na 2 podzbiory:
+
+    # dict --> Data Frame
+    df_all = pd.DataFrame(records)
+
+    # columns
+    columns_tab1 = ['PO Number',
+                    'Company Code',
+                    'Supplier ID',
+                    'Supplier Name',
+                    'Requester ID',
+                    'Requester Name',
+                    'Requester Mail',
+                    'Create Date',
+                    'Delivery Date',
+                    'Order Status',
+                    'Amount',
+                    'Currency']
+
+    columns_tab2 = ['PO Number',
+                    'Company Code',
+                    'Supplier ID',
+                    'Supplier Name',
+                    'Requester ID',
+                    'Requester Name',
+                    'Requester Mail',
+                    'Delivery Date',
+                    'Order Status',
+                    'Amount',
+                    'Invoice Number',
+                    'Invoice Date',
+                    'Invoice Status',
+                    'Invoice Amount',
+                    'Currency',
+                    'Payment Terms']
+
+    # 2 excel sheets
     df_tab1 = df_all[columns_tab1]
     df_tab2 = df_all[columns_tab2]
 
-    # write excel
-    with pd.ExcelWriter("procurement_mock_dataset_inv.xlsx", 
-                        engine='openpyxl') as writer:
-        df_tab1.to_excel(writer,
-                         sheet_name='Ariba',
-                         index=False)
-        df_tab2.to_excel(writer,
-                         sheet_name='Invoices',
-                         index=False)
-    
+    # save Excel - all sheets 
+    with pd.ExcelWriter(output_file, engine='openpyxl') as writer:
+        df_tab1.to_excel(writer, sheet_name='Ariba', index=False)
+        df_tab2.to_excel(writer, sheet_name='Invoices', index=False)
 
-    
-    print("Generated the file procurement_mock_dataset_inv with 2 sheets.")
+    return output_file
 
 # %%
 # GUI
@@ -604,7 +567,7 @@ from datetime import datetime
 
 root = tk.Tk()
 root.title("SAP Ariba Mock Data Generator")
-root.geometry("700x700")
+root.geometry("700x800")          # size
 save_folder = tk.StringVar(value="")
 
 # Styl suwaka
@@ -648,6 +611,58 @@ record_scale = ttk.Scale(
 record_scale.set(2500)
 record_scale.pack(pady=10)          #margines
 
+#zakres dat wprowadza user - extended 31.10.2026
+DATE_FORMAT = "%d.%m.%Y"            # format daty w polach (np. 31.10.2026)
+years_back_max = 5                  # "Data od" nie może być starsza niż 5 lat
+
+tk.Label(
+         root,
+         text="Zakres dat utworzenia PO (dd.mm.rrrr):",
+         font=("Arial", 12, "bold"),
+         fg="#293037").pack(pady=5)
+
+date_frame = tk.Frame(root)         # ramka, żeby oba pola były w jednym wierszu
+date_frame.pack()
+
+# StringVar + default values - last 12 months
+date_from_var = tk.StringVar(value=(datetime.today() - timedelta(days=365)).strftime(DATE_FORMAT))
+date_to_var = tk.StringVar(value=datetime.today().strftime(DATE_FORMAT))
+
+tk.Label(date_frame, text="Data od:", font=("Arial", 11), fg="#293037").pack(side="left", padx=5)
+tk.Entry(date_frame, textvariable=date_from_var, width=12, font=("Arial", 11)).pack(side="left", padx=5)
+tk.Label(date_frame, text="Data do:", font=("Arial", 11), fg="#293037").pack(side="left", padx=5)
+tk.Entry(date_frame, textvariable=date_to_var, width=12, font=("Arial", 11)).pack(side="left", padx=5)
+
+
+def read_dates():
+    '''
+    Czyta daty z pól i sprawdza je.
+    Zwraca (start_date, end_date), a jeśli coś jest nie tak - pokazuje okienko i zwraca None.
+    '''
+    # str-->datetime
+    try:
+        start_date = datetime.strptime(date_from_var.get().strip(), DATE_FORMAT)    
+        end_date = datetime.strptime(date_to_var.get().strip(), DATE_FORMAT)        
+    except ValueError:
+        messagebox.showwarning("Zła data", "Wpisz daty w formacie dd.mm.rrrr, np. 31.10.2026.")
+        return None
+
+    today = datetime.today()
+    # date- not older than 5 years (MAX_YEARS)
+    if start_date < today - timedelta(days=years_back_max * 365):
+        messagebox.showwarning("Zła data", f"Data od nie może być starsza niż {years_back_max} lat.")
+        return None
+    # 3. date cannot be in the future!
+    if end_date > today:
+        messagebox.showwarning("Zła data", "Data do nie może być w przyszłości.")
+        return None
+    # 'data od' cannot be bigger than 'data to'
+    if start_date >= end_date:
+        messagebox.showwarning("Zła data", "Data od musi być wcześniejsza niż Data do.")
+        return None
+
+    return start_date, end_date
+
 # Company codes - 2 kolumny
 tk.Label(
           root, 
@@ -660,10 +675,9 @@ checkbox_vars = {}
 checkbox_frame = tk.Frame(root)
 checkbox_frame.pack()
 
-# pobieramy listę company codes z pliku głównego
+
 codes = company_codes
-# dzielimy listę company codes na 2 częci
-half = len(codes) // 2
+half = len(codes) // 2 # dzielimy listę company codes na 2 częci
 
 left_frame = tk.Frame(checkbox_frame)
 right_frame = tk.Frame(checkbox_frame)
@@ -749,15 +763,22 @@ def run_generator():
         messagebox.showwarning("Brak wyboru", "Musisz wybrać przynajmniej jeden Company Code.")
         return
 
+    # dates check
+    dates = read_dates()
+    if dates is None:
+        return
+    start_date, end_date = dates
+
+    # excel file save
     if save_folder.get():
-        output_file = save_folder.get() + "/generated_procurement_mock.csv"
+        output_file = save_folder.get() + "/generated_procurement_mock.xlsx"
     else:
-        output_file = "generated_procurement_mock.csv"
+        output_file = "generated_procurement_mock.xlsx"
 
     try:
-        generate_mock_data(record_count, selected, output_file)
+        generate_mock_data(record_count, selected, output_file, start_date, end_date)
         messagebox.showinfo("Sukces", f"Wygenerowano {record_count} rekordów.\n"
-                            "Plik zapisano jako:\n{output_file}")
+                            f"Plik zapisano jako:\n{output_file}")   # f-string, żeby pokazać prawdziwą ścieżkę
     except Exception as e:
         import traceback
         messagebox.showerror("Błąd", f"{e}\n\n{traceback.format_exc()}")
