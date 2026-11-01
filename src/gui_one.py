@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jun 27 18:02:37 2026
-Extended on Sat Oct 21 18:59:49 2026
 Extended on Sat Oct 31 20:11:59 2026
+Extended on Sun Nov 01 10:35:11 2026
 
 @author: Kamila Dudzińska
 
@@ -54,7 +54,7 @@ def weighted_choice(choices):
         347
     """
     
-    total = sum(w for _, _, w in choices)
+    total = sum([w for _, _, w in choices])
     r = random.uniform(0, total)                #floating-point number from zero to total 0.87
     upto = 0                                    #upto = counter
     #  dolny zakres, górny zakres, waga
@@ -139,8 +139,19 @@ def generate_invoice_date(delivery_date: datetime, today: datetime) -> tuple[str
     if isinstance(delivery_date, str):
         delivery_date = datetime.strptime(delivery_date, "%d.%m.%Y")
 
+    # extended* - the last version has constant data frame - January - May 2026
+    # now user defines the data frame - the function changed to avoide the 
+    # invoice with date in the future - logic conflict
+    if delivery_date > today:
+        return None, 0
+
     payment_terms = random.randint(10, 90)
     invoice_date = delivery_date + timedelta(days=payment_terms)
+
+    #if invoice_date > today, new loop with random 
+    if invoice_date > today:
+        invoice_date = delivery_date + timedelta(days=random.randint(0, (today - delivery_date).days))
+        payment_terms = (invoice_date - delivery_date).days
     invoice_date_str = invoice_date.strftime("%d.%m.%Y")
 
     return invoice_date_str, payment_terms
@@ -249,28 +260,39 @@ def get_order_status(delivery_date: datetime | str | None, today: datetime) -> s
     return "ordered"
 
 
-def generate_invoice_number(existing_inv:str) ->str:
+def generate_invoice_number(existing_inv:str, invoice_date:str | None = None) ->str:
     '''
     Generates unique invoice number in the specified format.
 
     Args:
         existing_inv (list[str]): 
             A list of already generated invoice numbers to avoid duplicates.
+        invoice_date (str | None):
+            Invoice date in format "%d.%m.%Y". Year and month of the invoice
+            number are taken from this date. If None - current year, random month.
 
     Returns:
         str: 
-            A unique invoice number formatted as `FV/YYYY/MM/NNNN`.
+            A unique invoice number formatted as `FV/YYYY/MM/NNNNN`.
 
     Example:
-        >>> existing_inv = ["FV/2026/03/0914", "FV/2026/07/0452"]
-        >>> generate_invoice_number(existing_inv)
-        'FV/2026/12/0831'
+        >>> existing_inv = ["FV/2026/03/00914", "FV/2026/07/00452"]
+        >>> generate_invoice_number(existing_inv, "15.03.2025")
+        'FV/2025/03/08310'
     '''
 
-    while True:
-        year = '2026'
+    # year and month in the invoice basis on the invoice_date* (01.11.2026)
+    if invoice_date:
+        invoice_dt = datetime.strptime(invoice_date, "%d.%m.%Y")
+        year = str(invoice_dt.year)
+        month = f"{invoice_dt.month:02d}"
+    else:
+        # no invoice_date - then random month + year 2026
+        year = str(datetime.today().year)                   
         month = f"{random.randint(1,12):02d}"
-        random_num = f'{random.randint(1,9999):04d}'
+
+    while True:
+        random_num = f'{random.randint(1,99999):05d}'
         random_inv = f'FV/{year}/{month}/{random_num}' 
         if random_inv not in existing_inv:
             return random_inv
@@ -477,17 +499,25 @@ def generate_mock_data(record_count: int, selected_company_codes: list[str], out
         # status zamówienia zależy od daty dostawy (get_order_status)
         order_status = get_order_status(delivery_date, today)
 
-        invoice_number = generate_invoice_number(existing_inv)
-        existing_inv.add(invoice_number)
-
         # data faktury: data dostawy + termin płatności (10 do 90 dni)
         invoice_date, payment_terms = generate_invoice_date(delivery_date, today)
 
-        invoice_status = random.choice(invoice_choices)
         amount = weighted_choice(amount_ranges)
 
-        # kwota faktury: zwykle = kwota PO, przy statusie "hold" może się różnić (do +/- 20%)
-        invoice_amount = calculate_invoice_amount(amount, order_status, invoice_status)
+        if invoice_date is None:
+            # dostawa jeszcze nie przyszła -> brak faktury: puste numer, status i kwota faktury
+            invoice_number = None
+            invoice_status = None
+            invoice_amount = None
+        else:
+            # numer faktury dopiero PO dacie faktury - rok i miesiąc w numerze biorą się z tej daty
+            invoice_number = generate_invoice_number(existing_inv, invoice_date)
+            existing_inv.add(invoice_number)
+
+            invoice_status = random.choice(invoice_choices)
+
+            # kwota faktury: zwykle = kwota PO, przy statusie "hold" może się różnić (do +/- 20%)
+            invoice_amount = calculate_invoice_amount(amount, order_status, invoice_status)
         currency = random.choice(currency_choices)
 
         # one row - one result
@@ -565,45 +595,130 @@ from tkinter import ttk, messagebox
 from tkinter import filedialog
 from datetime import datetime
 
+# KOLORY I CZCIONKA - extended 01.11.2026 - 
+# Każdy projekt z serii ma swój kolor: 
+#    --> Mobi - granat (#1F3A5F)
+#    --> Invio - śliwka (#5B1A5B)
+#    --> SAP Mock Generator - ciemna zieleń (#2E6B52)
+# duże literki - to zmienne globalne PEP 8
+GREEN = "#1F4D3A"          
+GREEN_HOVER = "#2E6B52"    
+MINT = "#D5EFE0"           
+GREY = "#6B7280"           
+LIGHT_GREY = "#E5E7EB"     
+TEXT = "#293037"           
+BG = "#EEF3EF"             # jasna szaro-zieleń zamiast bieli - mniej męczy wzrok (extended 01.11.2026)
+FONT = "Calibri"           
+
 root = tk.Tk()
 root.title("SAP Ariba Mock Data Generator")
-root.geometry("700x800")          # size
-save_folder = tk.StringVar(value="")
+root.geometry("700x650")          # size
+root.minsize(600, 620)            # min. size 
+root.configure(bg=BG)
+
+# wdiget settings
+root.option_add("*Background", BG)
+root.option_add("*Font", (FONT, 11))
+# master=root -> for Spyder - only active choice* (pamięta tylko aktywny wybór)
+save_folder = tk.StringVar(master=root, 
+                           value="")
+
+# Spójny nagłówek
+header = tk.Frame(root, 
+                  bg=GREEN, 
+                  height=70)
+# fill="x" - pasek na całą szerokość okna - aby zachować styl z Mobi & Invio
+header.pack(fill="x")                  
+header.pack_propagate(False)           
+tk.Label(header, 
+         text="SAP Ariba Mock Data Generator",
+         bg=GREEN, 
+         fg="white", 
+         font=(FONT, 18, "bold")).pack(pady=(10, 0))
+tk.Label(header, 
+         text="Procurement mock data  •  PO + Invoices",
+         bg=GREEN, 
+         fg=MINT, 
+         font=(FONT, 10)).pack()
 
 # Styl suwaka
-style = ttk.Style()
+style = ttk.Style(root)            
 style.theme_use('clam')
 style.configure("green.Horizontal.TScale", 
-                troughcolor="#e0e0e0", 
-                background="#4CAF50")
+                troughcolor=LIGHT_GREY, 
+                background=GREEN,
+                bordercolor=LIGHT_GREY,
+                lightcolor=GREEN,      # lightcolor/darkcolor - cieniowanie
+                darkcolor=GREEN)
 
 # suwak - wartosci
-record_var = tk.IntVar(value=2500)
+record_var = tk.IntVar(master=root, 
+                       value=2500)
+
+MIN_RECORDS = 100                  # zakres suwaka i pola do wpisania
+MAX_RECORDS = 50000
 
 def update_label(value):
+    # update suwaczka
     record_var.set(int(float(value)))
     record_label.config(text=f"{record_var.get()} rekordów", 
-                        fg="black", 
-                        font=("Arial", 12))
+                        fg=GREEN, 
+                        font=(FONT, 12, "bold"))
+    record_entry_var.set(str(record_var.get()))
+
+
+def apply_entry(event=None):
+    '''
+    Liczba rekordów wpisana ręcznie (extended 01.11.2026).
+    Sprawdza wpis i ustawia suwak. Zwraca True, jeśli liczba jest OK.
+    event=None, bo funkcję wołamy z klawisza Enter (wtedy tkinter podaje event) i z run_generator (bez eventu).
+    '''
+    text = record_entry_var.get().strip().replace(" ", "")   # "10 000" -> "10000"
+    if not text.isdigit():
+        messagebox.showwarning("Zła liczba", f"Wpisz liczbę rekordów od {MIN_RECORDS} do {MAX_RECORDS}.")
+        return False
+    count = int(text)
+    if not MIN_RECORDS <= count <= MAX_RECORDS:
+        messagebox.showwarning("Zła liczba", f"Liczba rekordów musi być od {MIN_RECORDS} do {MAX_RECORDS}.")
+        return False
+    record_scale.set(count)        # przesuwa suwak -> suwak sam wywoła update_label i odświeży napis
+    return True
 
 # suwak - labelki
 tk.Label(
          root, 
          text="Ilość rekordów do wygenerowania:", 
-         font=("Arial", 12), 
-         fg="#293037").pack(pady=10)
+         font=(FONT, 12, "bold"), 
+         fg=TEXT).pack(pady=(15, 5))
 
-record_label = tk.Label(
-                        root, 
+# wiersz: [pole do wpisania]  [napis "2500 rekordów"]
+count_frame = tk.Frame(root)
+count_frame.pack()
+
+record_entry_var = tk.StringVar(master=root, 
+                                value="2500")
+record_entry = tk.Entry(count_frame, 
+                        textvariable=record_entry_var, 
+                        width=8, 
+                        fg=TEXT,
+                        justify="center", 
+                        relief="flat", 
+                        bg="white",
+                        highlightthickness=1, 
+                        highlightbackground=LIGHT_GREY, 
+                        highlightcolor=GREEN)
+record_entry.pack(side="left", padx=10)
+record_entry.bind("<Return>", apply_entry)     # Enter w polu -> ustaw suwak na wpisaną liczbę
+
+record_label = tk.Label(count_frame, 
                         text=f"{record_var.get()} rekordów", 
-                        fg="#293037",                           #ciemny szary
-                        font=("Arial", 12, "bold"))
-record_label.pack()
+                        fg=GREEN,                               #zielony - wybrana liczba
+                        font=(FONT, 12, "bold"))
+record_label.pack(side="left")
 
-record_scale = ttk.Scale(
-                         root, 
-                         from_=100, 
-                         to=50000, 
+record_scale = ttk.Scale(root, 
+                         from_=MIN_RECORDS, 
+                         to=MAX_RECORDS, 
                          orient="horizontal", 
                          length=400,
                          style="green.Horizontal.TScale", 
@@ -615,23 +730,45 @@ record_scale.pack(pady=10)          #margines
 DATE_FORMAT = "%d.%m.%Y"            # format daty w polach (np. 31.10.2026)
 years_back_max = 5                  # "Data od" nie może być starsza niż 5 lat
 
-tk.Label(
-         root,
+tk.Label(root,
          text="Zakres dat utworzenia PO (dd.mm.rrrr):",
-         font=("Arial", 12, "bold"),
-         fg="#293037").pack(pady=5)
+         font=(FONT, 12, "bold"),
+         fg=TEXT).pack(pady=5)
 
 date_frame = tk.Frame(root)         # ramka, żeby oba pola były w jednym wierszu
 date_frame.pack()
 
 # StringVar + default values - last 12 months
-date_from_var = tk.StringVar(value=(datetime.today() - timedelta(days=365)).strftime(DATE_FORMAT))
-date_to_var = tk.StringVar(value=datetime.today().strftime(DATE_FORMAT))
+date_from_var = tk.StringVar(master=root, 
+                             value=(datetime.today() - timedelta(days=365)).strftime(DATE_FORMAT))
+date_to_var = tk.StringVar(master=root, 
+                           value=datetime.today().strftime(DATE_FORMAT))
 
-tk.Label(date_frame, text="Data od:", font=("Arial", 11), fg="#293037").pack(side="left", padx=5)
-tk.Entry(date_frame, textvariable=date_from_var, width=12, font=("Arial", 11)).pack(side="left", padx=5)
-tk.Label(date_frame, text="Data do:", font=("Arial", 11), fg="#293037").pack(side="left", padx=5)
-tk.Entry(date_frame, textvariable=date_to_var, width=12, font=("Arial", 11)).pack(side="left", padx=5)
+# pola z datami: jasnoszara ramka, a po kliknięciu w pole - zielona (highlightcolor)
+tk.Label(date_frame, 
+         text="Data od:", 
+         fg=GREY).pack(side="left", padx=5)
+tk.Entry(date_frame, 
+         textvariable=date_from_var, 
+         width=12, 
+         fg=TEXT, 
+         relief="flat", 
+         bg="white",
+         highlightthickness=1, 
+         highlightbackground=LIGHT_GREY, 
+         highlightcolor=GREEN).pack(side="left", padx=5)
+tk.Label(date_frame, 
+         text="Data do:", 
+         fg=GREY).pack(side="left", padx=5)
+tk.Entry(date_frame, 
+         textvariable=date_to_var, 
+         width=12, 
+         fg=TEXT, 
+         relief="flat", 
+         bg="white",
+         highlightthickness=1, 
+         highlightbackground=LIGHT_GREY, 
+         highlightcolor=GREEN).pack(side="left", padx=5)
 
 
 def read_dates():
@@ -648,7 +785,7 @@ def read_dates():
         return None
 
     today = datetime.today()
-    # date- not older than 5 years (MAX_YEARS)
+    # date- not older than 5 years (years_back_max)
     if start_date < today - timedelta(days=years_back_max * 365):
         messagebox.showwarning("Zła data", f"Data od nie może być starsza niż {years_back_max} lat.")
         return None
@@ -663,50 +800,37 @@ def read_dates():
 
     return start_date, end_date
 
-# Company codes - 2 kolumny
-tk.Label(
-          root, 
-          text="Wybierz Company Codes:", 
-          font=("Arial", 12, "bold"), 
-          fg="#293037").pack(pady=10)
+# Company codes - 3 kolumny (extended 01.11.2026 - wcześniej 2 kolumny, okno było za długie)
+tk.Label(root, 
+         text="Wybierz Company Codes:", 
+         font=(FONT, 12, "bold"), 
+         fg=TEXT).pack(pady=(15, 5))
 
 # słownik wybranych wartoci
 checkbox_vars = {}
 checkbox_frame = tk.Frame(root)
 checkbox_frame.pack()
 
-
 codes = company_codes
-half = len(codes) // 2 # dzielimy listę company codes na 2 częci
+COLUMNS = 4                                   # liczba kolumn z checkboxami (16 kodów = 4 x 4, równe kolumny)
+rows = -(-len(codes) // COLUMNS)              # dzielenie z zaokrągleniem w górę: 16 kodów / 4 = 4 wiersze
 
-left_frame = tk.Frame(checkbox_frame)
-right_frame = tk.Frame(checkbox_frame)
-left_frame.pack(side="left", padx=20)
-right_frame.pack(side="left", padx=20)
-
-# Checkboxy
-for code in codes[:half]:           # od początku: do połowy*
-    var = tk.BooleanVar()           # wartosć logiczna, True zaznaczony obiekt
+# Checkboxy - grid() układa je w siatce: wiersz i kolumna
+# kolejność "w dół kolumnami": A001, A002... w 1. kolumnie, potem 2. kolumna itd.
+for i, code in enumerate(codes):
+    var = tk.BooleanVar(master=root)          # wartosć logiczna, True zaznaczony obiekt
     checkbox_vars[code] = var
-    tk.Checkbutton(left_frame, 
+    tk.Checkbutton(checkbox_frame, 
                    text=code, 
                    variable=var, 
-                   font=("Arial", 11), 
-                   fg="#293037").pack(anchor="w")
+                   fg=TEXT,
+                   activebackground=MINT,     # tło po najechaniu myszką
+                   highlightthickness=0,      
+                   selectcolor=MINT            # selectcolor = tło kwadracika, gdy zaznaczony
+                   ).grid(row=i % rows, column=i // rows, sticky="w", padx=15)
 
 
-for code in codes[half:]:           
-    var = tk.BooleanVar()
-    checkbox_vars[code] = var
-    tk.Checkbutton(
-                   right_frame, 
-                   text=code, 
-                   variable=var, 
-                   font=("Arial", 11), 
-                   fg="#293037").pack(anchor="w")
-
-
-# Przyciski zaznacz/odznacz
+# Przyciski zaznacz/odznacz - obok siebie w jednym rzędzie (oszczędza miejsce w pionie)
 def select_all():
     for var in checkbox_vars.values():
         var.set(True)
@@ -715,18 +839,23 @@ def deselect_all():
     for var in checkbox_vars.values():
         var.set(False)
 
+buttons_frame = tk.Frame(root)
+buttons_frame.pack(pady=10)
+
 tk.Button(
-          root, 
+          buttons_frame, 
           text="Zaznacz wszystko", 
           command=select_all,
-          bg="#4CAF50", 
+          bg=GREEN, 
           fg="white", 
-          relief="raised",      # wypukły
+          activebackground=GREEN_HOVER,   # kolor w momencie kliknięcia
+          activeforeground="white",
+          relief="flat",        # płaski - nowocześniej, tak jak pozostałe przyciski
           padx=10, 
-          pady=5).pack(pady=5)
+          pady=5).pack(side="left", padx=5)
 
-tk.Button(root, text="Odznacz wszystko", command=deselect_all,
-          bg="#e0e0e0", fg="black", relief="flat", padx=10, pady=5).pack(pady=5)
+tk.Button(buttons_frame, text="Odznacz wszystko", command=deselect_all,
+          bg=LIGHT_GREY, fg=TEXT, activebackground=MINT, relief="flat", padx=10, pady=5).pack(side="left", padx=5)
 
 
 #wybór folderu do zapisu
@@ -740,8 +869,9 @@ tk.Button(
           root, 
           text="Wybierz folder zapisu", 
           command = choose_folder,
-          bg="#4CAF50", 
-          fg="white", 
+          bg=MINT,              # miętowy - przycisk "pomocniczy", żeby nie konkurował z Generuj dane
+          fg=GREEN, 
+          activebackground=LIGHT_GREY,
           relief="flat", 
           padx=10, 
           pady=5).pack(pady=10)
@@ -749,13 +879,16 @@ tk.Button(
 folder_label = tk.Label(
                         root, 
                         text="Nie wybrano folderu", 
-                        font=("Arial", 10), 
-                        fg="#293037")
+                        font=(FONT, 10), 
+                        fg=GREY)
 folder_label.pack()
 
 
 # Generator danych
 def run_generator():
+    # najpierw liczba z pola - ktoś mógł ją wpisać i od razu kliknąć "Generuj dane" bez Entera
+    if not apply_entry():
+        return
     record_count = record_var.get()
     selected = [code for code, var in checkbox_vars.items() if var.get()]
 
@@ -783,7 +916,23 @@ def run_generator():
         import traceback
         messagebox.showerror("Błąd", f"{e}\n\n{traceback.format_exc()}")
 
-# Generuj dane Button
-ttk.Button(root, text="Generuj dane", command=run_generator).pack(pady=20)
+# Generuj dane Button - najważniejszy przycisk w kolorach spójnych
+tk.Button(root, 
+          text="Generuj dane", 
+          command=run_generator,
+          bg=GREEN, 
+          fg="white", 
+          activebackground=GREEN_HOVER, 
+          activeforeground="white",
+          font=(FONT, 13, "bold"), 
+          relief="flat", 
+          padx=30, pady=8).pack(pady=20)          # cursor="hand2" -> rączka po najechaniu
+
+
+
+
+
+
+
 
 root.mainloop()

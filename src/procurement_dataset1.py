@@ -3,6 +3,7 @@
 Created on Sat Jun 20 20:00:27 2026
 Extended on Thu Oct 22 19:05:20 2026
 Extended on Sat Oct 31 20:11:59 2026
+Extended on Sun Nov 01 11:52:06 2026
 
 @author: Kamila Dudzińska
 
@@ -168,7 +169,9 @@ def weighted_choice(choices):
     Most orders are low-budget orders (tactical sourcing).
     '''
     
-    total = sum(w for _, _, w in choices)
+    # lista [ ] zamiast samego generatora: działa i ze zwykłym sum(), i gdy Spyder podmieni sum
+    # na numpy.sum (opcja "load Pylab and NumPy") - wtedy generator dawał TypeError (extended 01.11.2026)
+    total = sum([w for _, _, w in choices])
     r = random.uniform(0, total)                #floating-point number from zero to total
     upto = 0                                    #upto = counter
     #  dolny zakres, górny zakres, waga

@@ -2,6 +2,7 @@
 """
 Created on Sat Jun 27 18:02:37 2026
 Extended on Thu Oct 22 20:05:20 2026
+Extended on Sun Nov 01 11:14:38 2026
 
 @author: Kamila Dudzińska
 
@@ -52,7 +53,9 @@ def weighted_choice(choices):
         347
     """
     
-    total = sum(w for _, _, w in choices)
+    # lista [ ] zamiast samego generatora: działa i ze zwykłym sum(), i gdy Spyder podmieni sum
+    # na numpy.sum (opcja "load Pylab and NumPy") - wtedy generator dawał TypeError (extended 01.11.2026)
+    total = sum([w for _, _, w in choices])
     r = random.uniform(0, total)                #floating-point number from zero to total 0.87
     upto = 0                                    #upto = counter
     #  dolny zakres, górny zakres, waga
@@ -140,11 +143,13 @@ def generate_invoice_date(delivery_date:datetime, today:datetime) -> tuple[str |
     Returns:
         tuple[str | None, int]: 
             A tuple containing:
-              - The invoice date formatted as "%d.%m.%Y" (or None if invalid).
-              - The payment term in days (integer between 10 and 90).
+              - The invoice date formatted as "%d.%m.%Y" (or None if invalid
+                or if the delivery date is in the future).
+              - The payment term in days (between 10 and 90; shorter if the
+                invoice date had to be moved back to today at the latest).
 
     Example:
-        >>> generate_invoice_date(datetime(2026, 3, 25), datetime(2026, 4, 1))
+        >>> generate_invoice_date(datetime(2026, 3, 25), datetime(2026, 8, 1))
         ('23.05.2026', 59)
     '''
   
@@ -153,9 +158,20 @@ def generate_invoice_date(delivery_date:datetime, today:datetime) -> tuple[str |
     
     if isinstance(delivery_date, str):
         delivery_date = datetime.strptime(delivery_date, "%d.%m.%Y")
-              
+
+    # FAKTURA MAKSYMALNIE DO DZISIAJ (extended 01.11.2026)
+    # Przy sztywnych datach (styczeń-maj 2026) faktury zawsze wypadały w przeszłości.
+    # Teraz daty są dynamiczne (do dzisiaj), więc trzeba pilnować, żeby faktura nie była z przyszłości.
+    if delivery_date > today:
+        return None, 0
+
     payment_terms = random.randint(10, 90)
     invoice_date = delivery_date + timedelta(days=payment_terms)
+
+    # 2. data faktury wypadła po dzisiaj -> losujemy ją od nowa między dostawą a dzisiaj
+    if invoice_date > today:
+        invoice_date = delivery_date + timedelta(days=random.randint(0, (today - delivery_date).days))
+        payment_terms = (invoice_date - delivery_date).days
     invoice_date: str  = invoice_date.strftime("%d.%m.%Y")
     
     return invoice_date, payment_terms
@@ -228,7 +244,7 @@ def get_order_status(delivery_date: datetime | str | None, today: datetime) -> s
         'ordered'
     """
 
-    # --- 1. Pusta data dostawy -> tylko "ordered" lub "confirmed"
+    # Pusta data dostawy -> tylko "ordered" lub "confirmed"
     if delivery_date is None or delivery_date == "" or str(delivery_date).lower() == "nan":
         return random.choices(
             population=["ordered", "confirmed"],
@@ -236,14 +252,14 @@ def get_order_status(delivery_date: datetime | str | None, today: datetime) -> s
             k=1
         )[0]
 
-    # --- 2. Jeśli mamy string, zamieniamy na datetime
+    # Jeśli mamy string, zamieniamy na datetime
     if isinstance(delivery_date, str):
         delivery_date = datetime.strptime(delivery_date, "%d-%m-%Y")
 
-    # --- 3. Granica 10 dni temu
+    # Granica 10 dni temu
     ten_days_ago = today - timedelta(days=10)
 
-    # --- 4. Delivery Date w ostatnich 10 dniach (do dziś)
+    # Delivery Date w ostatnich 10 dniach (do dziś)
     if ten_days_ago <= delivery_date <= today:
         return random.choices(
             population=["received", "invoiced"],
@@ -251,7 +267,7 @@ def get_order_status(delivery_date: datetime | str | None, today: datetime) -> s
             k=1
         )[0]
 
-    # --- 5. Delivery Date starsza niż 10 dni
+    # Delivery Date starsza niż 10 dni
     if delivery_date < ten_days_ago:
         return random.choices(
             population=["received", "confirmed", "invoiced"],
@@ -259,32 +275,44 @@ def get_order_status(delivery_date: datetime | str | None, today: datetime) -> s
             k=1
         )[0]
 
-    # --- 6. Delivery Date w przyszłości (awaryjnie)
+    # Delivery Date w przyszłości (awaryjnie)
     return "ordered"
 
 
-def generate_invoice_number(existing_inv:str) ->str:
+def generate_invoice_number(existing_inv:str, invoice_date:str | None = None) ->str:
     '''
     Generates unique invoice number in the specified format.
 
     Args:
         existing_inv (list[str]): 
             A list of already generated invoice numbers to avoid duplicates.
+        invoice_date (str | None):
+            Invoice date in format "%d.%m.%Y". Year and month of the invoice
+            number are taken from this date. If None - current year, random month.
 
     Returns:
         str: 
-            A unique invoice number formatted as `FV/YYYY/MM/NNNN`.
+            A unique invoice number formatted as `FV/YYYY/MM/NNNNN`.
 
     Example:
-        >>> existing_inv = ["FV/2026/03/0914", "FV/2026/07/0452"]
-        >>> generate_invoice_number(existing_inv)
-        'FV/2026/12/0831'
+        >>> existing_inv = ["FV/2026/03/00914", "FV/2026/07/00452"]
+        >>> generate_invoice_number(existing_inv, "15.03.2025")
+        'FV/2025/03/08310'
     '''
 
-    while True:
-        year = '2026'
+    # rok i miesiąc w numerze faktury bierzemy z daty faktury (wcześniej rok był na sztywno '2026',
+    # więc faktura z 2024 dostawała numer FV/2026/... co było confused -  extended 01.11.2026)
+    if invoice_date:
+        invoice_dt = datetime.strptime(invoice_date, "%d.%m.%Y")
+        year = str(invoice_dt.year)
+        month = f"{invoice_dt.month:02d}"
+    else:
+        # brak daty faktury -> jak wcześniej: bieżący rok i losowy miesiąc
+        year = str(datetime.today().year)
         month = f"{random.randint(1,12):02d}"
-        random_num = f'{random.randint(1,9999):04d}'
+
+    while True:
+        random_num = f'{random.randint(1,99999):05d}'
         random_inv = f'FV/{year}/{month}/{random_num}' 
         if random_inv not in existing_inv:
             return random_inv
@@ -303,7 +331,7 @@ REGEX_RULES = {
     "Delivery Date":  r"^(\d{4}-\d{2}-\d{2}|\d{2}\.\d{2}\.\d{4})$",
     "Amount":         r"^\d+(\.\d{1,2})?$",           # max 2 decimals
     "Currency":       r"^[A-Z]{3}$",                  # ISO 4217, e.g. EUR
-    "Invoice Number": r"^FV/\d{4}/\d{2}/\d{4}$",      # FV/2026/03/0914
+    "Invoice Number": r"^FV/\d{4}/\d{2}/\d{5}$",      # FV/2026/03/00914 (5 cyfr od 01.11.2026)
     "Payment Terms":  r"^\d+$",                       # days
 }
 
