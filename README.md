@@ -66,8 +66,9 @@ Project test run on module **pytest**.
 
 To run tests:
 ```bash
-python -m pytest -v
+   python -m pytest -v
 ```
+
 
 ✨ Key Features
 
@@ -93,7 +94,12 @@ python -m pytest -v
 
 - SAP Ariba‑aligned fields — column names and logic follow typical Ariba procurement objects (PO, Supplier, User, Company, Amount, Dates).
 
+- Ready-to-use output — the GUI saves an Excel file (2 sheets), the script saves a CSV; an example is in the data_output/ folder. Both can be used right away in Power BI, Python, SQL or Excel. (extended 31.10.2026)
+
 - Extensible architecture — easy to add new fields, business rules, validation layers, or additional procurement modules (invoices, contracts, sourcing events).
+
+- Reproducible script — procurement_dataset1.py uses a seed (42), so the script gives identical results for tests and documentation.
+
 
 
 How to adjust the amount of mock data? 🧪
@@ -141,14 +147,14 @@ v1.1.0 (01.11.2026): the installer was rebuilt from the new gui_one.py. It keeps
 ⚙️ Technical Steps:
 
 1. Building the executable
-bash
-```
+
+```bash
    pyinstaller --onefile --windowed --icon=ikonka.ico gui_one.py
 ```
 Output: gui_one.exe — a self‑contained binary with no external DLL requirements.
 
 
-3. Creating the MSI installer:
+2. Creating the MSI installer:
 bash
 ```
    candle installer.wxs
@@ -158,7 +164,7 @@ bash
 Output: SAP_Mock_Generator.msi — an installer with directory selection and application icon support.
 
 
-5. Installation workflow:
+3. Installation workflow:
    
 User selects the installation folder.
 
@@ -176,16 +182,16 @@ Application is ready to run immediately after installation.
 
 * WiX Toolset requires a strict two‑step build (candle → light) executed in the same directory as the .wxs file.
 
-*The final packaging pipeline is stable, reproducible, and easy to maintain for future releases.
+* The final packaging pipeline is stable, reproducible, and easy to maintain for future releases.
 
 
 💱 Why I decided for Python instead of AI? 
 
---> because the script is faster, we can genearte a mock dataset with 50 000 rows in some second and for the AI it would take ages, if not collapsed. 
+--> because the script is faster, we can genearte a mock dataset with 50 000 rows in less than one minute and for the AI it would take ages, if not collapsed. 
 
 --> because it is easy to change the data we need - the amount of rows, the amount of users, start date, delivery date etc.
 
---> because I do my projects from A to Z - AI helped me with names of companies and names of users, the rest is my own work. I prefer to work harder and understand the logic, cause one created it will be possible to easy repaeted in other environment. 
+--> because I do my projects from A to Z - AI helped me with names of companies and names of users, the rest is my own work. I prefer to work harder and understand the logic, cause once created it will be possible to easy repeated in other environment. 
 
 
 Future Improvements: ✨
@@ -208,31 +214,33 @@ Full documentation and regex:
 [Documentation and regex](docs/data_description.ipynb)
 
 Example of functions:
-def generate_po_number(existing:int) -> int:
-    '''
-    Generates an order number in the range 6000000000 - 6000999999, 
-    according to the SAP ARIBA standard.
 
-    This function genertes a random PO number from the mentioned range.
-
-    Args:
-        existing (list[int]): 
-            A list of already generated PO numbers to avoid duplicates.
-
-    Returns:
-        int: A unique PO number within the specified range.
-
-    Example:
-        >>> existing = [6000000001, 6000000002]
-        >>> generate_po_number(existing)
-        6000000347
-    '''
-  
-    while True:
-        num = random.randint(6000000000, 6000999999)
-        if num not in existing:
-            return num
-
+   ```python 
+      def generate_po_number(existing:int) -> int:
+          '''
+          Generates an order number in the range 6000000000 - 6000999999, 
+          according to the SAP ARIBA standard.
+      
+          This function generates a random PO number from the mentioned range.
+      
+          Args:
+              existing (list[int]): 
+                  A list of already generated PO numbers to avoid duplicates.
+      
+          Returns:
+              int: A unique PO number within the specified range.
+      
+          Example:
+              >>> existing = [6000000001, 6000000002]
+              >>> generate_po_number(existing)
+              6000000347
+          '''
+        
+          while True:
+              num = random.randint(6000000000, 6000999999)
+              if num not in existing:
+                  return num
+```
 
 
 The script in the attachment. Below some pictures of code and generated excel file
@@ -347,8 +355,6 @@ Aby uruchomić testy:
 
 - Gotowy plik wynikowy — GUI zapisuje Excel (2 zakładki), skrypt zapisuje CSV; przykład jest w folderze data_output/. Oba można od razu użyć w Power BI, Pythonie, SQL lub Excelu. (extended 31.10.2026)
 
-- Deterministyczne wyniki — generowanie oparte na seedzie pozwala na powtarzalne testy i dokumentację.
-
 - Łatwa rozbudowa — prosta architektura umożliwia dodawanie nowych pól, reguł, walidacji lub modułów (faktury, kontrakty, sourcing).
 
 - Powtarzalny skrypt — procurement_dataset1.py używa seeda (42), więc skrypt daje identyczne wyniki do testów i dokumentacji.
@@ -403,16 +409,16 @@ v1.1.0 (01.11.2026): instalator został zbudowany od nowa z nowego gui_one.py. M
 
 Budowa pliku .exe
 
-bash
-```
+
+```bash
    pyinstaller --onefile --windowed --icon=ikonka.ico gui_one.py
 ```
 → wynik: gui_one.exe
 
 Tworzenie instalatora
 
-bash
-```
+
+```bash
    candle installer.wxs
    light installer.wixobj -ext WixUIExtension -out SAP_Mock_Generator.msi
 ```
@@ -442,7 +448,7 @@ Po zakończeniu można od razu uruchomić aplikację.
 
 💱 Dlaczego zdecydowałam się na Python zamiast AI?
 
---> ponieważ skrypt działa szybciej, możemy wygenerować fikcyjny zbiór danych o 50 000 wierszach w kilka sekund, a AI zajęłoby to wieki, jeśli w ogóle by się nie zawiesiło.
+--> ponieważ skrypt działa szybciej, możemy wygenerować fikcyjny zbiór danych o 50 000 wierszach w mniej niż minutę, a AI zajęłoby to wieki, jeśli w ogóle by się nie zawiesiło.
 
 --> ponieważ łatwo zmienić dane, które potrzebujemy - ilość wierszy, ilość użytkowników, datę rozpoczęcia, datę dostawy itp.
 
@@ -468,31 +474,33 @@ Pełna dokumentacja i regex:
 [Documentation and regex](docs/data_description.ipynb)
 
 Przykłady funkcji:
-def generate_po_number(existing:int) -> int:
-    '''
-    Generates an order number in the range 6000000000 - 6000999999, 
-    according to the SAP ARIBA standard.
 
-    This function genertes a random PO number from the mentioned range.
-
-    Args:
-        existing (list[int]): 
-            A list of already generated PO numbers to avoid duplicates.
-
-    Returns:
-        int: A unique PO number within the specified range.
-
-    Example:
-        >>> existing = [6000000001, 6000000002]
-        >>> generate_po_number(existing)
-        6000000347
-    '''
-  
-    while True:
-        num = random.randint(6000000000, 6000999999)
-        if num not in existing:
-            return num
-
+```python
+      def generate_po_number(existing:int) -> int:
+          '''
+          Generates an order number in the range 6000000000 - 6000999999, 
+          according to the SAP ARIBA standard.
+      
+          This function generates a random PO number from the mentioned range.
+      
+          Args:
+              existing (list[int]): 
+                  A list of already generated PO numbers to avoid duplicates.
+      
+          Returns:
+              int: A unique PO number within the specified range.
+      
+          Example:
+              >>> existing = [6000000001, 6000000002]
+              >>> generate_po_number(existing)
+              6000000347
+          '''
+        
+          while True:
+              num = random.randint(6000000000, 6000999999)
+              if num not in existing:
+                  return num
+```
 
 Fragmenty kodu:
 
