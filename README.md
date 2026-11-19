@@ -244,9 +244,13 @@ Example of functions:
 
 
 The script in the attachment. Below some pictures of code and generated excel file
-![kod](images/mock1.png)
-![kod2](images/mock2.png)
-![raport csv](images/mock3.png)
+![code - functions](images/mock1.png)
+![code - main](images/mock2.png)
+![code - folder](images/mock6.png)
+![code -save](images/mock7.png)
+![file](images/mock3.png)
+![gui](images/gui_i.png)
+
 
 ### Contact:  
 
@@ -504,9 +508,11 @@ Przykłady funkcji:
 
 Fragmenty kodu:
 
-![kod](images/mock1.png)
-![kod2](images/mock2.png)
-![raport csv](images/mock3.png)
+![kod - funkcje](images/mock1.png)
+![kod - main](images/mock2.png)
+![kod - wybór folderu](images/mock6.png)
+![kod - zapis do pliku](images/mock7.png)
+![plik](images/mock3.png)
 ![interfejs graficzny](images/gui_i.png)
 
 <hr style="border:3px solid #AEC6CF;">
